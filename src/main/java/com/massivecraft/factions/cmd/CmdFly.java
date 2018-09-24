@@ -36,9 +36,13 @@ public class CmdFly extends FCommand {
         this.senderMustBeMember = true;
         this.senderMustBeModerator = false;
     }
-    /// I'll optimize this later today or tomorrow
 
     public static void startParticles() {
+        // Just a secondary check.
+        if (!P.p.getConfig().getBoolean("ffly.Particles.Enabled")) {
+            return;
+        }
+
         id = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, new Runnable() {
             @Override
             public void run() {
@@ -189,18 +193,18 @@ public class CmdFly extends FCommand {
         FLocation myfloc = new FLocation(me.getLocation());
         Faction toFac = Board.getInstance().getFactionAt(myfloc);
         if (!checkBypassPerms(fme, me, toFac)) return;
-        List<Entity> entities = me.getNearbyEntities(16, 256, 16);
-        for (int i = 0; i <= entities.size() - 1; i++) {
+        List<Entity> entities = this.me.getNearbyEntities(16.0D, 256.0D, 16.0D);
+
+        for(int i = 0; i <= entities.size() - 1; ++i) {
             if (entities.get(i) instanceof Player) {
-                Player eplayer = (Player) entities.get(i);
+                Player eplayer = (Player)entities.get(i);
                 FPlayer efplayer = FPlayers.getInstance().getByPlayer(eplayer);
-                if (efplayer.getRelationTo(fme) == Relation.ENEMY && !efplayer.isStealthEnabled()) {
-                    fme.msg(TL.COMMAND_FLY_CHECK_ENEMY);
+                if (efplayer.getRelationTo(this.fme) == Relation.ENEMY && !efplayer.isStealthEnabled()) {
+                    this.fme.msg(TL.COMMAND_FLY_CHECK_ENEMY);
                     return;
                 }
             }
         }
-
 
         if (args.size() == 0) {
             toggleFlight(!fme.isFlying(), me);

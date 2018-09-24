@@ -31,6 +31,7 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
@@ -218,6 +219,7 @@ public class P extends MPlugin {
 
 
 
+
         setupPlaceholderAPI();
         postEnable();
         this.loadSuccessful = true;
@@ -230,7 +232,6 @@ public class P extends MPlugin {
             SOIL, MOB_SPANWER, THIN_GLASS, IRON_FENCE, NETHER_FENCE, FENCE,
             WOODEN_DOOR, TRAP_DOOR, FENCE_GATE, BURNING_FURNACE, DIODE_BLOCK_OFF,
             DIODE_BLOCK_ON, ENCHANTMENT_TABLE, FIREBALL;
-
 
     private void setupMultiversionMaterials() {
         if (mc113) {
@@ -281,7 +282,6 @@ public class P extends MPlugin {
             ENCHANTMENT_TABLE = Material.valueOf("ENCHANTMENT_TABLE");
             FIREBALL = Material.valueOf("FIREBALL");
         }
-
 
     }
 
@@ -393,6 +393,7 @@ public class P extends MPlugin {
                 .registerTypeAdapter(accessTypeAdatper, new PermissionsMapTypeAdapter())
                 .registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter())
                 .registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter())
+                .registerTypeAdapter(Inventory.class, new InventoryTypeAdapter())
                 .registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
     }
 

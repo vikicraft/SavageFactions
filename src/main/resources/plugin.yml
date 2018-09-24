@@ -1,5 +1,5 @@
 name: Factions
-version: ${project.version}-1.4-RELEASE-CANDIDATE
+version: ${project.version}-1.4-RC-2
 api-version: 1.13
 main: com.massivecraft.factions.P
 authors: [Olof Larsson, Brett Flannigan, drtshock, ProSavage, AL56AF50]
@@ -227,6 +227,8 @@ permissions:
     description: set permanent power for a faction
   factions.stuck:
     description: teleports player outside a faction
+  factions.setpaypal:
+    description: set paypal to faction
   factions.power:
     description: show player power info
   factions.power.any:
