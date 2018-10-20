@@ -178,8 +178,8 @@ public class P extends MPlugin {
         // start up task which runs the autoLeaveAfterDaysOfInactivity routine
         startAutoLeaveTask(false);
 
-        //massive stats
-        MassiveStats massive = new MassiveStats(this);
+        // massive stats
+        new MassiveStats(this);
 
 
 
@@ -259,7 +259,9 @@ public class P extends MPlugin {
             FIREBALL = Material.valueOf("LEGACY_FIREBALL");
 
         } else {
-            BANNER = Material.valueOf("BANNER");
+            if (!mc17) {
+                BANNER = Material.valueOf("BANNER");
+            }
             CROPS = Material.valueOf("CROPS");
             SUGAR_CANE_BLOCK = Material.valueOf("SUGAR_CANE_BLOCK");
             REDSTONE_LAMP_ON = Material.valueOf("REDSTONE_LAMP_ON");
@@ -394,6 +396,7 @@ public class P extends MPlugin {
                 .registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter())
                 .registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter())
                 .registerTypeAdapter(Inventory.class, new InventoryTypeAdapter())
+                .registerTypeAdapter(Location.class, new LocationTypeAdapter())
                 .registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
     }
 

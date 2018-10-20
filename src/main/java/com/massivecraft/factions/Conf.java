@@ -2,6 +2,7 @@ package com.massivecraft.factions;
 
 import com.google.common.collect.ImmutableMap;
 import com.massivecraft.factions.integration.dynmap.DynmapStyle;
+import com.massivecraft.factions.util.MultiversionMaterials;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -371,7 +372,16 @@ public class Conf {
         territoryDenyUseageMaterials.add(Material.BUCKET);
         territoryDenyUseageMaterials.add(Material.WATER_BUCKET);
         territoryDenyUseageMaterials.add(Material.LAVA_BUCKET);
-        territoryDenyUseageMaterials.add(Material.ARMOR_STAND);
+        territoryDenyUseageMaterials.add(MultiversionMaterials.ACACIA_BUTTON.parseMaterial());
+        territoryDenyUseageMaterials.add(MultiversionMaterials.BIRCH_BUTTON.parseMaterial());
+        territoryDenyUseageMaterials.add(MultiversionMaterials.DARK_OAK_BUTTON.parseMaterial());
+        territoryDenyUseageMaterials.add(MultiversionMaterials.JUNGLE_BUTTON.parseMaterial());
+        territoryDenyUseageMaterials.add(MultiversionMaterials.OAK_BUTTON.parseMaterial());
+        territoryDenyUseageMaterials.add(MultiversionMaterials.STONE_BUTTON.parseMaterial());
+        if (!P.p.mc17) {
+            territoryDenyUseageMaterials.add(Material.ARMOR_STAND);
+        }
+
 
         territoryProtectedMaterialsWhenOffline.add(P.p.WOODEN_DOOR);
         territoryProtectedMaterialsWhenOffline.add(P.p.TRAP_DOOR);
@@ -398,8 +408,15 @@ public class Conf {
         territoryDenyUseageMaterialsWhenOffline.add(Material.BUCKET);
         territoryDenyUseageMaterialsWhenOffline.add(Material.WATER_BUCKET);
         territoryDenyUseageMaterialsWhenOffline.add(Material.LAVA_BUCKET);
-        territoryDenyUseageMaterialsWhenOffline.add(Material.ARMOR_STAND);
-
+        territoryDenyUseageMaterialsWhenOffline.add(MultiversionMaterials.ACACIA_BUTTON.parseMaterial());
+        territoryDenyUseageMaterialsWhenOffline.add(MultiversionMaterials.BIRCH_BUTTON.parseMaterial());
+        territoryDenyUseageMaterialsWhenOffline.add(MultiversionMaterials.DARK_OAK_BUTTON.parseMaterial());
+        territoryDenyUseageMaterialsWhenOffline.add(MultiversionMaterials.JUNGLE_BUTTON.parseMaterial());
+        territoryDenyUseageMaterialsWhenOffline.add(MultiversionMaterials.OAK_BUTTON.parseMaterial());
+        territoryDenyUseageMaterialsWhenOffline.add(MultiversionMaterials.STONE_BUTTON.parseMaterial());
+        if (!P.p.mc17) {
+            territoryDenyUseageMaterialsWhenOffline.add(Material.ARMOR_STAND);
+        }
         safeZoneNerfedCreatureTypes.add(EntityType.BLAZE);
         safeZoneNerfedCreatureTypes.add(EntityType.CAVE_SPIDER);
         safeZoneNerfedCreatureTypes.add(EntityType.CREEPER);
