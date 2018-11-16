@@ -123,7 +123,7 @@ public abstract class MPlugin extends JavaPlugin {
                     int read;
                     byte[] bytes = new byte[1024];
 
-                    while ((read = defLangStream.read(bytes)) != -1) {
+                    while ((read = defLangStream.read(bytes)) != - 1) {
                         out.write(bytes, 0, read);
                     }
                     YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new BufferedReader(new InputStreamReader(defLangStream)));
@@ -218,7 +218,7 @@ public abstract class MPlugin extends JavaPlugin {
         this.rawTags.put("b", "<rose>"); // bad
         this.rawTags.put("h", "<pink>"); // highligh
         this.rawTags.put("c", "<aqua>"); // command
-        this.rawTags.put("p", "<teal>"); // parameter
+        this.rawTags.put("plugin", "<teal>"); // parameter
     }
 
     public void initTXT() {
@@ -242,7 +242,7 @@ public abstract class MPlugin extends JavaPlugin {
     // COMMAND HANDLING
     // -------------------------------------------- //
 
-    // can be overridden by P method, to provide option
+    // can be overridden by SavageFactions method, to provide option
     public boolean logPlayerCommands() {
         return true;
     }

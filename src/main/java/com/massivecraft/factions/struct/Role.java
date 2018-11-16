@@ -1,7 +1,7 @@
 package com.massivecraft.factions.struct;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
@@ -55,6 +55,7 @@ public enum Role implements Permissable {
 
     public static Role fromString(String check) {
         switch (check.toLowerCase()) {
+            case "leader":
             case "admin":
                 return LEADER;
             case "coleader":
@@ -92,7 +93,7 @@ public enum Role implements Permissable {
 
     public String getPrefix() {
         if (this == Role.LEADER) {
-            return Conf.prefixAdmin;
+            return Conf.prefixLeader;
         }
         if (this == Role.COLEADER) {
             return Conf.prefixCoLeader;
@@ -115,7 +116,7 @@ public enum Role implements Permissable {
     // Utility method to build items for F Perm GUI
     @Override
     public ItemStack buildItem() {
-        final ConfigurationSection RELATION_CONFIG = P.p.getConfig().getConfigurationSection("fperm-gui.relation");
+        final ConfigurationSection RELATION_CONFIG = SavageFactions.plugin.getConfig().getConfigurationSection("fperm-gui.relation");
 
         String displayName = replacePlaceholders(RELATION_CONFIG.getString("placeholder-item.name", ""));
         List<String> lore = new ArrayList<>();
@@ -134,7 +135,7 @@ public enum Role implements Permissable {
 
         itemMeta.setDisplayName(displayName);
         itemMeta.setLore(lore);
-        if (!P.p.mc17) {
+        if (!SavageFactions.plugin.mc17) {
             itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         }
 

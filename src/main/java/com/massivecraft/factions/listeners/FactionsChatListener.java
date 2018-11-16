@@ -19,15 +19,15 @@ import java.util.logging.Level;
 
 public class FactionsChatListener implements Listener {
 
-    public P p;
+    public SavageFactions savageFactions;
 
-    public FactionsChatListener(P p) {
-        this.p = p;
+    public FactionsChatListener(SavageFactions savageFactions) {
+        this.savageFactions = savageFactions;
     }
 
 
     // this is for handling slashless command usage and faction/alliance chat, set at lowest priority so Factions gets to them first
-    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    @EventHandler (priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerEarlyChat(AsyncPlayerChatEvent event) {
         Player talkingPlayer = event.getPlayer();
         String msg = event.getMessage();
@@ -134,7 +134,7 @@ public class FactionsChatListener implements Listener {
 
 
     // this is for handling insertion of the player's faction tag, set at highest priority to give other plugins a chance to modify chat first
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         // Are we to insert the Faction tag into the format?
         // If we are not to insert it - we are done.
@@ -190,9 +190,9 @@ public class FactionsChatListener implements Listener {
                     listeningPlayer.sendMessage(String.format(yourFormat, talkingPlayer.getDisplayName(), msg));
                 } catch (UnknownFormatConversionException ex) {
                     Conf.chatTagInsertIndex = 0;
-                    P.p.log(Level.SEVERE, "Critical error in chat message formatting!");
-                    P.p.log(Level.SEVERE, "NOTE: This has been automatically fixed right now by setting chatTagInsertIndex to 0.");
-                    P.p.log(Level.SEVERE, "For a more proper fix, please read this regarding chat configuration: http://massivecraft.com/plugins/factions/config#Chat_configuration");
+                    SavageFactions.plugin.log(Level.SEVERE, "Critical error in chat message formatting!");
+                    SavageFactions.plugin.log(Level.SEVERE, "NOTE: This has been automatically fixed right now by setting chatTagInsertIndex to 0.");
+                    SavageFactions.plugin.log(Level.SEVERE, "For a more proper fix, please read this regarding chat configuration: http://massivecraft.com/plugins/factions/config#Chat_configuration");
                     return;
                 }
             }
@@ -216,7 +216,7 @@ public class FactionsChatListener implements Listener {
                     fme.msg(TL.COMMAND_FWARP_WARPED, warp);
                 }
             }
-        }, P.p.getConfig().getLong("warmups.f-warp", 0));
+        }, SavageFactions.plugin.getConfig().getLong("warmups.f-warp", 0));
     }
 
 }

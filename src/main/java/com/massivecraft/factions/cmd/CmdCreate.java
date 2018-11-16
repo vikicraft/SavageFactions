@@ -89,7 +89,7 @@ public class CmdCreate extends FCommand {
         // We should consider adding the role just AFTER joining the faction.
         // That way we don't have to mess up deleting more stuff.
         // And prevent the user from being returned to NORMAL after deleting his old faction.
-      fme.setRole(Role.LEADER);
+        fme.setRole(Role.LEADER);
 
         for (FPlayer follower : FPlayers.getInstance().getOnlinePlayers()) {
             follower.msg(TL.COMMAND_CREATE_CREATED, fme.describeTo(follower, true), faction.getTag(follower));
@@ -98,9 +98,9 @@ public class CmdCreate extends FCommand {
         msg(TL.COMMAND_CREATE_YOUSHOULD, p.cmdBase.cmdDescription.getUseageTemplate());
 
         if (Conf.logFactionCreate) {
-            P.p.log(fme.getName() + TL.COMMAND_CREATE_CREATEDLOG.toString() + tag);
+            SavageFactions.plugin.log(fme.getName() + TL.COMMAND_CREATE_CREATEDLOG.toString() + tag);
         }
-        if (P.p.getConfig().getBoolean("fpaypal.Enabled")) {
+        if (SavageFactions.plugin.getConfig().getBoolean("fpaypal.Enabled")) {
             this.fme.msg(TL.COMMAND_PAYPALSET_CREATED);
         }
     }

@@ -1,7 +1,7 @@
 package com.massivecraft.factions.util;
 
 import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -27,7 +27,7 @@ public abstract class SpiralTask implements Runnable {
     // general task-related reference data
     private transient World world = null;
     private transient boolean readyToGo = false;
-    private transient int taskID = -1;
+    private transient int taskID = - 1;
     private transient int limit = 0;
 
     // values for the spiral pattern routine
@@ -35,17 +35,17 @@ public abstract class SpiralTask implements Runnable {
     private transient int z = 0;
     private transient boolean isZLeg = false;
     private transient boolean isNeg = false;
-    private transient int length = -1;
+    private transient int length = - 1;
     private transient int current = 0;
 
-    @SuppressWarnings("LeakingThisInConstructor")
+    @SuppressWarnings ("LeakingThisInConstructor")
     public SpiralTask(FLocation fLocation, int radius) {
         // limit is determined based on spiral leg length for given radius; see insideRadius()
         this.limit = (radius - 1) * 2;
 
         this.world = Bukkit.getWorld(fLocation.getWorldName());
         if (this.world == null) {
-            P.p.log(Level.WARNING, "[SpiralTask] A valid world must be specified!");
+            SavageFactions.plugin.log(Level.WARNING, "[SpiralTask] A valid world must be specified!");
             this.stop();
             return;
         }
@@ -56,7 +56,7 @@ public abstract class SpiralTask implements Runnable {
         this.readyToGo = true;
 
         // get this party started
-        this.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(P.p, this, 2, 2));
+        this.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, this, 2, 2));
     }
 
     private static long now() {
@@ -103,7 +103,7 @@ public abstract class SpiralTask implements Runnable {
     }
 
     public final void setTaskID(int ID) {
-        if (ID == -1) {
+        if (ID == - 1) {
             this.stop();
         }
         taskID = ID;
@@ -169,9 +169,9 @@ public abstract class SpiralTask implements Runnable {
 
         // move one chunk further in the appropriate direction
         if (isZLeg) {
-            z += (isNeg) ? -1 : 1;
+            z += (isNeg) ? - 1 : 1;
         } else {
-            x += (isNeg) ? -1 : 1;
+            x += (isNeg) ? - 1 : 1;
         }
 
         return true;
@@ -187,7 +187,7 @@ public abstract class SpiralTask implements Runnable {
 
     // for successful completion
     public void finish() {
-//		P.p.log("SpiralTask successfully completed!");
+//		SavageFactions.plugin.log("SpiralTask successfully completed!");
         this.stop();
     }
 
@@ -199,11 +199,11 @@ public abstract class SpiralTask implements Runnable {
 
         readyToGo = false;
         Bukkit.getServer().getScheduler().cancelTask(taskID);
-        taskID = -1;
+        taskID = - 1;
     }
 
     // is this task still valid/workable?
     public final boolean valid() {
-        return taskID != -1;
+        return taskID != - 1;
     }
 }

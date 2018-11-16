@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 
-public abstract class FCommand extends MCommand<P> {
+public abstract class FCommand extends MCommand<SavageFactions> {
 
     public SimpleDateFormat sdf = new SimpleDateFormat(TL.DATE_FORMAT.toString());
 
@@ -29,7 +29,7 @@ public abstract class FCommand extends MCommand<P> {
     public boolean isMoneyCommand;
 
     public FCommand() {
-        super(P.p);
+        super(SavageFactions.plugin);
 
         // Due to safety reasons it defaults to disable on lock.
         disableOnLock = true;
@@ -105,7 +105,7 @@ public abstract class FCommand extends MCommand<P> {
             return false;
         }
 
-        if (this.senderMustBeAdmin && ! fme.getRole().isAtLeast(Role.LEADER)) {
+        if (this.senderMustBeAdmin && !fme.getRole().isAtLeast(Role.LEADER)) {
             sender.sendMessage(p.txt.parse("<b>Only faction admins can %s.", this.getHelpShort()));
             return false;
         }
@@ -160,7 +160,7 @@ public abstract class FCommand extends MCommand<P> {
         }
 
         if (msg && ret == null) {
-            this.msg("<b>No player \"<p>%s<b>\" could be found.", name);
+            this.msg("<b>No player \"<plugin>%s<b>\" could be found.", name);
         }
 
         return ret;
@@ -233,7 +233,7 @@ public abstract class FCommand extends MCommand<P> {
         }
 
         if (msg && ret == null) {
-            this.msg("<b>The faction or player \"<p>%s<b>\" could not be found.", name);
+            this.msg("<b>The faction or player \"<plugin>%s<b>\" could not be found.", name);
         }
 
         return ret;
@@ -295,9 +295,9 @@ public abstract class FCommand extends MCommand<P> {
         }
 
         if (Conf.bankEnabled && Conf.bankFactionPaysCosts && fme.hasFaction()) {
-            return Econ.modifyMoney(myFaction, -cost, toDoThis, forDoingThis);
+            return Econ.modifyMoney(myFaction, - cost, toDoThis, forDoingThis);
         } else {
-            return Econ.modifyMoney(fme, -cost, toDoThis, forDoingThis);
+            return Econ.modifyMoney(fme, - cost, toDoThis, forDoingThis);
         }
     }
 

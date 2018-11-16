@@ -2,7 +2,7 @@ package com.massivecraft.factions.zcore;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -48,6 +48,7 @@ public abstract class MCommand<T extends MPlugin> {
     // This field may be left blank and will in such case be loaded from the permissions node instead.
     // Thus make sure the permissions node description is an action description like "eat hamburgers" or "do admin stuff".
     private String helpShort;
+
     public MCommand(T p) {
         this.p = p;
 
@@ -139,7 +140,7 @@ public abstract class MCommand<T extends MPlugin> {
      * In this method we validate that all prerequisites to perform this command has been met.
      *
      * @param sender of the command
-     * @param args of the command
+     * @param args   of the command
      * @return true if valid, false if not.
      */
     // TODO: There should be a boolean for silence
@@ -223,7 +224,7 @@ public abstract class MCommand<T extends MPlugin> {
         }
 
         if (args.size() > 0) {
-            ret.append(p.txt.parseTags("<p> "));
+            ret.append(p.txt.parseTags("<plugin> "));
             ret.append(TextUtil.implode(args, " "));
         }
 
@@ -306,7 +307,7 @@ public abstract class MCommand<T extends MPlugin> {
             s = s.replace("{power}", power);
         }
         if (s.contains("{group}")) {
-            String group = P.p.getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(player.getId())));
+            String group = SavageFactions.plugin.getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(player.getId())));
             s = s.replace("{group}", group);
         }
         return s;

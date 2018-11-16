@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
@@ -47,7 +47,7 @@ public class CmdKick extends FCommand {
                     String s = player.getName();
                     msg.then(s + " ").color(ChatColor.GRAY).tooltip(TL.COMMAND_KICK_CLICKTOKICK.toString() + s).command("/" + Conf.baseCommandAliases.get(0) + " kick " + s);
                 }
-              if (fme.getRole() == Role.LEADER) {
+                if (fme.getRole() == Role.LEADER) {
                     // Only add coleader to this for the leader.
                     for (FPlayer player : myFaction.getFPlayersWhereRole(Role.COLEADER)) {
                         String s = player.getName();
@@ -80,7 +80,7 @@ public class CmdKick extends FCommand {
         // - Make sure the kicked player has lower rank than the kicker.
         if (!fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.KICK);
-          if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
+            if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
                 fme.msg(TL.GENERIC_NOPERMISSION, "kick");
                 return;
             }
@@ -122,9 +122,9 @@ public class CmdKick extends FCommand {
             fme.msg(TL.COMMAND_KICK_KICKS, toKick.describeTo(fme), toKickFaction.describeTo(fme));
         }
         if (Conf.logFactionKick) {
-            P.p.log((senderIsConsole ? "A console command" : fme.getName()) + " kicked " + toKick.getName() + " from the faction: " + toKickFaction.getTag());
+            SavageFactions.plugin.log((senderIsConsole ? "A console command" : fme.getName()) + " kicked " + toKick.getName() + " from the faction: " + toKickFaction.getTag());
         }
-      if (toKick.getRole() == Role.LEADER) {
+        if (toKick.getRole() == Role.LEADER) {
             toKickFaction.promoteNewLeader();
         }
         toKickFaction.deinvite(toKick);

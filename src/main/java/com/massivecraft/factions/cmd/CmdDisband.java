@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
@@ -48,7 +48,7 @@ public class CmdDisband extends FCommand {
 
         if (!fme.isAdminBypassing()) {
             Access access = faction.getAccess(fme, PermissableAction.DISBAND);
-          if (access != Access.ALLOW || fme.getRole() != Role.LEADER) {
+            if (fme.getRole() != Role.LEADER && access != Access.ALLOW) {
                 fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "disband " + faction.getTag());
                 return;
             }
@@ -69,7 +69,7 @@ public class CmdDisband extends FCommand {
         if (!disbandMap.containsKey(me.getUniqueId().toString()) && faction.getTnt() > 0) {
             msg(TL.COMMAND_DISBAND_CONFIRM.toString().replace("{tnt}", faction.getTnt() + ""));
             disbandMap.put(me.getUniqueId().toString(), faction.getId());
-            Bukkit.getScheduler().scheduleSyncDelayedTask(P.p, new Runnable() {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(SavageFactions.plugin, new Runnable() {
                 @Override
                 public void run() {
                     disbandMap.remove(me.getUniqueId().toString());

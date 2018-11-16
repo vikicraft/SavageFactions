@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
@@ -174,7 +174,7 @@ public class CmdConfig extends FCommand {
                         return;
                     }
 
-                    @SuppressWarnings("unchecked") Set<Material> matSet = (Set<Material>) target.get(null);
+                    @SuppressWarnings ("unchecked") Set<Material> matSet = (Set<Material>) target.get(null);
 
                     // Material already present, so remove it
                     if (matSet.contains(newMat)) {
@@ -192,7 +192,7 @@ public class CmdConfig extends FCommand {
 
                 // Set<String>
                 else if (innerType == String.class) {
-                    @SuppressWarnings("unchecked") Set<String> stringSet = (Set<String>) target.get(null);
+                    @SuppressWarnings ("unchecked") Set<String> stringSet = (Set<String>) target.get(null);
 
                     // String already present, so remove it
                     if (stringSet.contains(value.toString())) {
@@ -231,10 +231,10 @@ public class CmdConfig extends FCommand {
         if (!success.isEmpty()) {
             if (sender instanceof Player) {
                 sendMessage(success);
-                P.p.log(success + TL.COMMAND_CONFIG_LOG.format((Player) sender));
-            } else  // using P.p.log() instead of sendMessage if run from server console so that "[Factions v#.#.#]" is prepended in server log
+                SavageFactions.plugin.log(success + TL.COMMAND_CONFIG_LOG.format((Player) sender));
+            } else  // using SavageFactions.plugin.log() instead of sendMessage if run from server console so that "[Factions v#.#.#]" is prepended in server log
             {
-                P.p.log(success);
+                SavageFactions.plugin.log(success);
             }
         }
         // save change to disk

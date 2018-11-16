@@ -3,7 +3,7 @@ package com.massivecraft.factions.integration;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
@@ -34,24 +34,24 @@ public class Econ {
         String integrationFail = "Economy integration is " + (Conf.econEnabled ? "enabled, but" : "disabled, and") + " the plugin \"Vault\" ";
 
         if (Bukkit.getServer().getPluginManager().getPlugin("Vault") == null) {
-            P.p.log(integrationFail + "is not installed.");
+            SavageFactions.plugin.log(integrationFail + "is not installed.");
             return;
         }
 
         RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
-            P.p.log(integrationFail + "is not hooked into an economy plugin.");
+            SavageFactions.plugin.log(integrationFail + "is not hooked into an economy plugin.");
             return;
         }
         econ = rsp.getProvider();
 
-        P.p.log("Economy integration through Vault plugin successful.");
+        SavageFactions.plugin.log("Economy integration through Vault plugin successful.");
 
         if (!Conf.econEnabled) {
-            P.p.log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
+            SavageFactions.plugin.log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
         }
 
-        P.p.cmdBase.cmdHelp.updateHelp();
+        SavageFactions.plugin.cmdBase.cmdHelp.updateHelp();
     }
 
     public static boolean shouldBeUsed() {
@@ -82,7 +82,7 @@ public class Econ {
 
     public static void sendBalanceInfo(FPlayer to, EconomyParticipator about) {
         if (!shouldBeUsed()) {
-            P.p.log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
+            SavageFactions.plugin.log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
             return;
         }
         to.msg("<a>%s's<i> balance is <h>%s<i>.", about.describeTo(to, true), Econ.moneyString(econ.getBalance(about.getAccountId())));
@@ -124,7 +124,7 @@ public class Econ {
             return true;
         }
 
-        // Otherwise you may not! ;,,;
+        // Otherwise you may not!;,,;
         i.msg("<h>%s<i> lacks permission to control <h>%s's<i> money.", i.describeTo(i, true), you.describeTo(i));
         return false;
     }
@@ -141,7 +141,7 @@ public class Econ {
         // The amount must be positive.
         // If the amount is negative we must flip and multiply amount with -1.
         if (amount < 0) {
-            amount *= -1;
+            amount *= - 1;
             EconomyParticipator temp = from;
             from = to;
             to = temp;
@@ -308,7 +308,7 @@ public class Econ {
             // The account might not have enough space
             EconomyResponse er = econ.depositPlayer(acc, delta);
             if (er.transactionSuccess()) {
-                modifyUniverseMoney(-delta);
+                modifyUniverseMoney(- delta);
                 if (forDoingThis != null && !forDoingThis.isEmpty()) {
                     ep.msg("<h>%s<i> gained <h>%s<i> %s.", You, moneyString(delta), forDoingThis);
                 }
@@ -324,17 +324,17 @@ public class Econ {
             // The player should loose money
             // The player might not have enough.
 
-            if (econ.has(acc, -delta) && econ.withdrawPlayer(acc, -delta).transactionSuccess()) {
+            if (econ.has(acc, - delta) && econ.withdrawPlayer(acc, - delta).transactionSuccess()) {
                 // There is enough money to pay
-                modifyUniverseMoney(-delta);
+                modifyUniverseMoney(- delta);
                 if (forDoingThis != null && !forDoingThis.isEmpty()) {
-                    ep.msg("<h>%s<i> lost <h>%s<i> %s.", You, moneyString(-delta), forDoingThis);
+                    ep.msg("<h>%s<i> lost <h>%s<i> %s.", You, moneyString(- delta), forDoingThis);
                 }
                 return true;
             } else {
                 // There was not enough money to pay
                 if (toDoThis != null && !toDoThis.isEmpty()) {
-                    ep.msg("<h>%s<i> can't afford <h>%s<i> %s.", You, moneyString(-delta), toDoThis);
+                    ep.msg("<h>%s<i> can't afford <h>%s<i> %s.", You, moneyString(- delta), toDoThis);
                 }
                 return false;
             }
@@ -410,7 +410,7 @@ public class Econ {
 
     public static boolean modifyBalance(String account, double amount) {
         if (amount < 0) {
-            return econ.withdrawPlayer(account, -amount).transactionSuccess();
+            return econ.withdrawPlayer(account, - amount).transactionSuccess();
         } else {
             return econ.depositPlayer(account, amount).transactionSuccess();
         }

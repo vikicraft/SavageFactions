@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.WarmUpUtil;
@@ -24,19 +25,19 @@ public class CmdTpBanner extends FCommand {
 
     @Override
     public void perform() {
-        if (!P.p.getConfig().getBoolean("fbanners.Enabled")) {
+        if (!SavageFactions.plugin.getConfig().getBoolean("fbanners.Enabled")) {
             return;
         }
 
 
-        final FactionsPlayerListener fpl = new FactionsPlayerListener(P.p);
+        final FactionsPlayerListener fpl = new FactionsPlayerListener(SavageFactions.plugin);
 
-        if (FactionsPlayerListener.bannerLocations.containsKey(fme.getTag())) {
+        if (FactionsBlockListener.bannerLocations.containsKey(fme.getTag())) {
             fme.msg(TL.COMMAND_TPBANNER_SUCCESS);
             this.doWarmUp(WarmUpUtil.Warmup.BANNER, TL.WARMUPS_NOTIFY_TELEPORT, "Banner", new Runnable() {
                 @Override
                 public void run() {
-                    me.teleport(FactionsPlayerListener.bannerLocations.get(fme.getTag()));
+                    me.teleport(FactionsBlockListener.bannerLocations.get(fme.getTag()));
                 }
             }, this.p.getConfig().getLong("warmups.f-banner", 0));
         } else {

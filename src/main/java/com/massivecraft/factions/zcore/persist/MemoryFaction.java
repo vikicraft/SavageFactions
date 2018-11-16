@@ -164,6 +164,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public boolean isWarpPassword(String warp, String password) {
         return hasWarpPassword(warp) && warpPasswords.get(warp.toLowerCase()).equals(password);
     }
+
     public String getPaypal() {
         return this.paypal;
     }
@@ -258,7 +259,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         }
         if (Conf.logFactionDisband) {
             //TODO: Format this correctly and translate.
-            P.p.log("The faction " + this.getTag() + " (" + this.getId() + ") was disbanded by " + (disbanderIsConsole ? "console command" : fdisbander.getName()) + ".");
+            SavageFactions.plugin.log("The faction " + this.getTag() + " (" + this.getId() + ") was disbanded by " + (disbanderIsConsole ? "console command" : fdisbander.getName()) + ".");
         }
 
         if (Econ.shouldBeUsed() && !disbanderIsConsole) {
@@ -270,7 +271,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
                 String amountString = Econ.moneyString(amount);
                 msg(TL.COMMAND_DISBAND_HOLDINGS, amountString);
                 //TODO: Format this correctly and translate
-                P.p.log(fdisbander.getName() + " has been given bank holdings of " + amountString + " from disbanding " + this.getTag() + ".");
+                SavageFactions.plugin.log(fdisbander.getName() + " has been given bank holdings of " + amountString + " from disbanding " + this.getTag() + ".");
             }
         }
 
@@ -354,11 +355,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             int level = getUpgrade("Chest");
             int size = 9;
             if (level == 1) {
-                size = P.p.getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-1") * 9;
+                size = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-1") * 9;
             } else if (level == 2) {
-                size = P.p.getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-2") * 9;
+                size = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-2") * 9;
             } else if (level == 3) {
-                size = P.p.getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-3") * 9;
+                size = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-3") * 9;
             }
 
             chest = Bukkit.createInventory(null, size);
@@ -551,7 +552,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public boolean isPowerFrozen() {
-        int freezeSeconds = P.p.getConfig().getInt("hcf.powerfreeze", 0);
+        int freezeSeconds = SavageFactions.plugin.getConfig().getInt("hcf.powerfreeze", 0);
         return freezeSeconds != 0 && System.currentTimeMillis() - lastDeath < freezeSeconds * 1000;
 
     }
@@ -637,7 +638,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void resetPerms() {
-        P.p.log(Level.WARNING, "Resetting permissions for Faction: " + tag);
+        SavageFactions.plugin.log(Level.WARNING, "Resetting permissions for Faction: " + tag);
 
         permissions.clear();
 
@@ -656,7 +657,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         // And each role.
         for (Role role : Role.values()) {
-          if (role != Role.LEADER) {
+            if (role != Role.LEADER) {
                 permissions.put(role, new HashMap<>(freshMap));
             }
         }
@@ -751,7 +752,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         if (this.relationWish.containsKey(otherFaction.getId())) {
             return this.relationWish.get(otherFaction.getId());
         }
-        return Relation.fromString(P.p.getConfig().getString("default-relation", "neutral")); // Always default to old behavior.
+        return Relation.fromString(SavageFactions.plugin.getConfig().getString("default-relation", "neutral")); // Always default to old behavior.
     }
 
     public void setRelationWish(Faction otherFaction, Relation relation) {
@@ -909,7 +910,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         }
 
         for (FPlayer fplayer : fplayers) {
-          if (fplayer.getRole() == Role.LEADER) {
+            if (fplayer.getRole() == Role.LEADER) {
                 return fplayer;
             }
         }
@@ -937,7 +938,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             return ret;
         }
 
-        for (Player player : P.p.getServer().getOnlinePlayers()) {
+        for (Player player : SavageFactions.plugin.getServer().getOnlinePlayers()) {
             FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
             if (fplayer.getFaction() == this) {
                 ret.add(player);
@@ -955,7 +956,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             return false;
         }
 
-        for (Player player : P.p.getServer().getOnlinePlayers()) {
+        for (Player player : SavageFactions.plugin.getServer().getOnlinePlayers()) {
             FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
             if (fplayer != null && fplayer.getFaction() == this) {
                 return true;
@@ -1001,7 +1002,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
             // no members left and faction isn't permanent, so disband it
             if (Conf.logFactionDisband) {
-                P.p.log("The faction " + this.getTag() + " (" + this.getId() + ") has been disbanded since it has no members left.");
+                SavageFactions.plugin.log("The faction " + this.getTag() + " (" + this.getId() + ") has been disbanded since it has no members left.");
             }
 
             for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
@@ -1013,10 +1014,10 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             if (oldLeader != null) {
                 oldLeader.setRole(Role.NORMAL);
             }
-          replacements.get(0).setRole(Role.LEADER);
+            replacements.get(0).setRole(Role.LEADER);
             //TODO:TL
             this.msg("<i>Faction admin <h>%s<i> has been removed. %s<i> has been promoted as the new faction admin.", oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
-            P.p.log("Faction " + this.getTag() + " (" + this.getId() + ") admin was removed. Replacement admin: " + replacements.get(0).getName());
+            SavageFactions.plugin.log("Faction " + this.getTag() + " (" + this.getId() + ") admin was removed. Replacement admin: " + replacements.get(0).getName());
         }
     }
 
@@ -1024,7 +1025,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     // Messages
     // ----------------------------------------------//
     public void msg(String message, Object... args) {
-        message = P.p.txt.parse(message, args);
+        message = SavageFactions.plugin.txt.parse(message, args);
 
         for (FPlayer fplayer : this.getFPlayersWhereOnline(true)) {
             fplayer.sendMessage(message);
@@ -1155,7 +1156,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public boolean playerHasOwnershipRights(FPlayer fplayer, FLocation loc) {
         // in own faction, with sufficient role or permission to bypass
         // ownership?
-      if (fplayer.getFaction() == this && (fplayer.getRole().isAtLeast(Conf.ownedAreaModeratorsBypass ? Role.MODERATOR : Role.LEADER) || Permission.OWNERSHIP_BYPASS.has(fplayer.getPlayer()))) {
+        if (fplayer.getFaction() == this && (fplayer.getRole().isAtLeast(Conf.ownedAreaModeratorsBypass ? Role.MODERATOR : Role.LEADER) || Permission.OWNERSHIP_BYPASS.has(fplayer.getPlayer()))) {
             return true;
         }
 

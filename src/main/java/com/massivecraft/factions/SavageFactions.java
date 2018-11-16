@@ -37,17 +37,18 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
+import java.io.*;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.logging.Level;
 
 
-public class P extends MPlugin {
+public class SavageFactions extends MPlugin {
 
     // Our single plugin instance.
     // Single 4 life.
-    public static P p;
+    public static SavageFactions plugin;
     public static Permission perms = null;
 
 
@@ -60,7 +61,12 @@ public class P extends MPlugin {
     public boolean mc113 = false;
     public boolean useNonPacketParticles = false;
     public boolean factionsFlight = false;
-
+    //multiversion material fields
+    public Material SUGAR_CANE_BLOCK, BANNER, CROPS, REDSTONE_LAMP_ON,
+            STAINED_GLASS, STATIONARY_WATER, STAINED_CLAY, WOOD_BUTTON,
+            SOIL, MOB_SPANWER, THIN_GLASS, IRON_FENCE, NETHER_FENCE, FENCE,
+            WOODEN_DOOR, TRAP_DOOR, FENCE_GATE, BURNING_FURNACE, DIODE_BLOCK_OFF,
+            DIODE_BLOCK_ON, ENCHANTMENT_TABLE, FIREBALL;
     // Persistence related
     private boolean locked = false;
     private Integer AutoLeaveTask = null;
@@ -68,11 +74,8 @@ public class P extends MPlugin {
     private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
     private boolean mvdwPlaceholderAPIManager = false;
 
-
-
-
-    public P() {
-        p = this;
+    public SavageFactions() {
+        plugin = this;
     }
 
     public boolean getLocked() {
@@ -114,31 +117,43 @@ public class P extends MPlugin {
 
 
         // Vault dependency check.
-        if (P.p.getServer().getPluginManager().getPlugin("Vault") == null) {
-            P.p.log("Vault is not present, the plugin will not run properly.");
-            P.p.getServer().getPluginManager().disablePlugin(P.p);
+        if (SavageFactions.plugin.getServer().getPluginManager().getPlugin("Vault") == null) {
+            SavageFactions.plugin.log("Vault is not present, the plugin will not run properly.");
+            this.onDisable();
+            Bukkit.getScheduler().scheduleSyncDelayedTask(this,
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            SavageFactions.plugin.getServer().getPluginManager().disablePlugin(SavageFactions.plugin);
+                        }
+                    }, 20L);
+            return;
+
         }
 
         int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
         if (version == 7) {
-            P.p.log("Minecraft Version 1.7 found, disabling banners, itemflags inside GUIs, and Titles.");
+            SavageFactions.plugin.log("Minecraft Version 1.7 found, disabling banners, itemflags inside GUIs, and Titles.");
             mc17 = true;
         } else if (version == 8) {
-            P.p.log("Minecraft Version 1.8 found, Title Fadeouttime etc will not be configurable.");
+            SavageFactions.plugin.log("Minecraft Version 1.8 found, Title Fadeouttime etc will not be configurable.");
             mc18 = true;
         } else if (version == 13) {
-            P.p.log("Minecraft Version 1.13 found, New Items will be used.");
+            SavageFactions.plugin.log("Minecraft Version 1.13 found, New Items will be used.");
             mc113 = true;
             changeItemIDSInConfig();
         }
         setupMultiversionMaterials();
+      migrateFPlayerLeaders();
         log("==== End Setup ====");
 
         if (!preEnable()) {
             return;
         }
         this.loadSuccessful = false;
+
         saveDefaultConfig();
+
 
         // Load Conf from disk
         Conf.load();
@@ -157,8 +172,6 @@ public class P extends MPlugin {
         }
         Board.getInstance().load();
         Board.getInstance().clean();
-
-        //inspect stuff
 
 
         // Add Base Commands
@@ -182,17 +195,14 @@ public class P extends MPlugin {
         new MassiveStats(this);
 
 
-
-
         if (version > 8) {
             useNonPacketParticles = true;
-            P.p.log("Minecraft Version 1.9 or higher found, using non packet based particle API");
+            SavageFactions.plugin.log("Minecraft Version 1.9 or higher found, using non packet based particle API");
         }
 
-        if (P.p.getConfig().getBoolean("enable-faction-flight")) {
+        if (SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight")) {
             factionsFlight = true;
         }
-
 
 
         // Register Event Handlers
@@ -208,7 +218,7 @@ public class P extends MPlugin {
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(this.refCommand).setExecutor(this);
 
-        if (P.p.getDescription().getFullName().contains("BETA")) {
+        if (SavageFactions.plugin.getDescription().getFullName().contains("BETA")) {
             divider();
             System.out.println("You are using a BETA version of the plugin!");
             System.out.println("This comes with risks of small bugs in newer features!");
@@ -217,21 +227,10 @@ public class P extends MPlugin {
         }
 
 
-
-
-
-        setupPlaceholderAPI();
-        postEnable();
+        this.setupPlaceholderAPI();
+        this.postEnable();
         this.loadSuccessful = true;
     }
-
-
-    //multiversion material fields
-    public Material SUGAR_CANE_BLOCK, BANNER, CROPS, REDSTONE_LAMP_ON,
-            STAINED_GLASS, STATIONARY_WATER, STAINED_CLAY, WOOD_BUTTON,
-            SOIL, MOB_SPANWER, THIN_GLASS, IRON_FENCE, NETHER_FENCE, FENCE,
-            WOODEN_DOOR, TRAP_DOOR, FENCE_GATE, BURNING_FURNACE, DIODE_BLOCK_OFF,
-            DIODE_BLOCK_ON, ENCHANTMENT_TABLE, FIREBALL;
 
     private void setupMultiversionMaterials() {
         if (mc113) {
@@ -308,11 +307,39 @@ public class P extends MPlugin {
         }
     }
 
+  private void migrateFPlayerLeaders() {
+    List<String> lines = new ArrayList<String>();
+    File fplayerFile = new File("plugins\\Factions\\players.json");
+    try {
+      BufferedReader br = new BufferedReader(new FileReader(fplayerFile));
+      System.out.println("Migrating old players.json file.");
 
-    public void changeItemIDSInConfig() {
+      String line;
+      while ((line = br.readLine()) != null) {
+        if (line.contains("\"role\": \"ADMIN\"")) {
+          line = line.replace("\"role\": \"ADMIN\"", "\"role\": " + "\"LEADER\"");
+        }
+        lines.add(line);
+      }
+      br.close();
+      BufferedWriter bw = new BufferedWriter(new FileWriter(fplayerFile));
+      for (String newLine : lines) {
+        bw.write(newLine + "\n");
+      }
+      bw.flush();
+      bw.close();
+    } catch (IOException ex) {
+      System.out.println("File was not found for players.json, assuming"
+              + " there is no need to migrate old players.json file.");
+    }
 
 
-        P.p.log("Starting conversion of legacy material in config to 1.13 materials.");
+  }
+
+    private void changeItemIDSInConfig() {
+
+
+        SavageFactions.plugin.log("Starting conversion of legacy material in config to 1.13 materials.");
 
 
         replaceStringInConfig("fperm-gui.relation.materials.recruit", "WOOD_SWORD", "WOODEN_SWORD");
@@ -353,7 +380,7 @@ public class P extends MPlugin {
 
     public void replaceStringInConfig(String path, String stringToReplace, String replacementString) {
         if (getConfig().getString(path).equals(stringToReplace)) {
-            P.p.log("Replacing legacy material '" + stringToReplace + "' with '" + replacementString + "' for config node '" + path + "'.");
+            SavageFactions.plugin.log("Replacing legacy material '" + stringToReplace + "' with '" + replacementString + "' for config node '" + path + "'.");
             getConfig().set(path, replacementString);
         }
     }
@@ -453,14 +480,14 @@ public class P extends MPlugin {
     public ItemStack createLazyItem(Material material, int amount, short datavalue, String name, String lore) {
         ItemStack item = new ItemStack(material, amount, datavalue);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(color(P.p.getConfig().getString(name)));
-        meta.setLore(colorList(P.p.getConfig().getStringList(lore)));
+        meta.setDisplayName(color(SavageFactions.plugin.getConfig().getString(name)));
+        meta.setLore(colorList(SavageFactions.plugin.getConfig().getStringList(lore)));
         item.setItemMeta(meta);
         return item;
     }
 
     public Economy getEcon() {
-        RegisteredServiceProvider<Economy> rsp = P.p.getServer().getServicesManager().getRegistration(Economy.class);
+        RegisteredServiceProvider<Economy> rsp = SavageFactions.plugin.getServer().getServicesManager().getRegistration(Economy.class);
         Economy econ = rsp.getProvider();
         return econ;
     }
@@ -491,10 +518,10 @@ public class P extends MPlugin {
         as.setVisible(false); //Makes the ArmorStand invisible
         as.setGravity(false); //Make sure it doesn't fall
         as.setCanPickupItems(false); //I'm not sure what happens if you leave this as it is, but you might as well disable it
-        as.setCustomName(P.p.color(text)); //Set this to the text you want
+        as.setCustomName(SavageFactions.plugin.color(text)); //Set this to the text you want
         as.setCustomNameVisible(true); //This makes the text appear no matter if your looking at the entity or not
         final ArmorStand armorStand = as;
-        Bukkit.getScheduler().scheduleSyncDelayedTask(P.p, new Runnable() {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(SavageFactions.plugin, new Runnable() {
             @Override
             public void run() {
                 Bukkit.broadcastMessage("removing stand");

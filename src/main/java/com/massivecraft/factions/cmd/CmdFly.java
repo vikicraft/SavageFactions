@@ -23,8 +23,8 @@ public class CmdFly extends FCommand {
 
 
     public static ConcurrentHashMap<String, Boolean> flyMap = new ConcurrentHashMap<String, Boolean>();
-    public static int id = -1;
-    public static int flyid = -1;
+    public static int id = - 1;
+    public static int flyid = - 1;
 
     public CmdFly() {
         super();
@@ -39,11 +39,11 @@ public class CmdFly extends FCommand {
 
     public static void startParticles() {
         // Just a secondary check.
-        if (!P.p.getConfig().getBoolean("ffly.Particles.Enabled")) {
+        if (!SavageFactions.plugin.getConfig().getBoolean("ffly.Particles.Enabled")) {
             return;
         }
 
-        id = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, new Runnable() {
+        id = Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, new Runnable() {
             @Override
             public void run() {
                 for (String name : flyMap.keySet()) {
@@ -54,7 +54,7 @@ public class CmdFly extends FCommand {
                     if (!player.isFlying()) {
                         continue;
                     }
-                    if (!P.p.mc17) {
+                    if (!SavageFactions.plugin.mc17) {
                         if (player.getGameMode() == GameMode.SPECTATOR) {
                             continue;
                         }
@@ -63,31 +63,31 @@ public class CmdFly extends FCommand {
                     if (FPlayers.getInstance().getByPlayer(player).isVanished()) {
                         // Actually, vanished players (such as admins) should not display particles to prevent others from knowing their vanished assistance for moderation.
                         // But we can keep it as a config.
-                        if (P.p.getConfig().getBoolean("ffly.Particles.Enable-While-Vanished")) {
+                        if (SavageFactions.plugin.getConfig().getBoolean("ffly.Particles.Enable-While-Vanished")) {
                             return;
                         }
                         continue;
                     }
-                    if (P.p.useNonPacketParticles) {
+                    if (SavageFactions.plugin.useNonPacketParticles) {
                         // 1.9+ based servers will use the built in particleAPI instead of packet based.
                         // any particle amount higher than 0 made them go everywhere, and the offset at 0 was not working.
                         // So setting the amount to 0 spawns 1 in the precise location
-                        player.getWorld().spawnParticle(Particle.CLOUD, player.getLocation().add(0, -0.35, 0), 0);
+                        player.getWorld().spawnParticle(Particle.CLOUD, player.getLocation().add(0, - 0.35, 0), 0);
                     } else {
-                        ParticleEffect.CLOUD.display((float) 0, (float) 0, (float) 0, (float) 0, 3, player.getLocation().add(0, -0.35, 0), 16);
+                        ParticleEffect.CLOUD.display((float) 0, (float) 0, (float) 0, (float) 0, 3, player.getLocation().add(0, - 0.35, 0), 16);
                     }
 
                 }
                 if (flyMap.keySet().size() == 0) {
                     Bukkit.getScheduler().cancelTask(id);
-                    id = -1;
+                    id = - 1;
                 }
             }
         }, 10L, 3L);
     }
 
     public static void startFlyCheck() {
-        flyid = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, new Runnable() {
+        flyid = Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, new Runnable() {
             @Override
             public void run() throws ConcurrentModificationException { //threw the exception for now, until I recode fly :( Cringe.
                 checkTaskState();
@@ -107,7 +107,10 @@ public class CmdFly extends FCommand {
                         if (fPlayer == null) {
                             continue;
                         }
-                        if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
+                        if (player.getGameMode() == GameMode.CREATIVE) {
+                            continue;
+                        }
+                        if (!SavageFactions.plugin.mc17 && player.getGameMode() == GameMode.SPECTATOR) {
                             continue;
                         }
                         Faction myFaction = fPlayer.getFaction();
@@ -174,7 +177,7 @@ public class CmdFly extends FCommand {
     public static void checkTaskState() {
         if (flyMap.keySet().size() == 0) {
             Bukkit.getScheduler().cancelTask(flyid);
-            flyid = -1;
+            flyid = - 1;
         }
     }
 
@@ -185,7 +188,7 @@ public class CmdFly extends FCommand {
     @Override
     public void perform() {
         // Disabled by default.
-        if (!P.p.getConfig().getBoolean("enable-faction-flight", false)) {
+        if (!SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight", false)) {
             fme.msg(TL.COMMAND_FLY_DISABLED);
             return;
         }
@@ -195,9 +198,9 @@ public class CmdFly extends FCommand {
         if (!checkBypassPerms(fme, me, toFac)) return;
         List<Entity> entities = this.me.getNearbyEntities(16.0D, 256.0D, 16.0D);
 
-        for(int i = 0; i <= entities.size() - 1; ++i) {
+        for (int i = 0; i <= entities.size() - 1; ++ i) {
             if (entities.get(i) instanceof Player) {
-                Player eplayer = (Player)entities.get(i);
+                Player eplayer = (Player) entities.get(i);
                 FPlayer efplayer = FPlayers.getInstance().getByPlayer(eplayer);
                 if (efplayer.getRelationTo(this.fme) == Relation.ENEMY && !efplayer.isStealthEnabled()) {
                     this.fme.msg(TL.COMMAND_FLY_CHECK_ENEMY);
@@ -227,12 +230,12 @@ public class CmdFly extends FCommand {
                 public void run() {
                     fme.setFlying(true);
                     flyMap.put(player.getName(), true);
-                    if (id == -1) {
-                        if (P.p.getConfig().getBoolean("ffly.Particles.Enabled")) {
+                    if (id == - 1) {
+                        if (SavageFactions.plugin.getConfig().getBoolean("ffly.Particles.Enabled")) {
                             startParticles();
                         }
                     }
-                    if (flyid == -1) {
+                    if (flyid == - 1) {
                         startFlyCheck();
                     }
                 }

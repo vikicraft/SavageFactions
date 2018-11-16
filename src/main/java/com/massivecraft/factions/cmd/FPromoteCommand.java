@@ -39,12 +39,12 @@ public class FPromoteCommand extends FCommand {
         }
 
         Role current = target.getRole();
-        Role promotion = Role.getRelative(current, +relative);
+        Role promotion = Role.getRelative(current, + relative);
 
         // Now it ain't that messy
         if (!fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.PROMOTE);
-          if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
+            if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
                 fme.msg(TL.GENERIC_NOPERMISSION, "manage ranks");
                 return;
             }

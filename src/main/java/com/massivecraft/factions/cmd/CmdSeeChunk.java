@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 
 import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.Particles.ParticleEffect;
 import com.massivecraft.factions.util.VisualizeUtil;
@@ -23,7 +23,7 @@ public class CmdSeeChunk extends FCommand {
     private boolean useParticles;
     private int length;
     private ParticleEffect effect;
-    private int taskID = -1;
+    private int taskID = - 1;
 
 
     //I remade it cause of people getting mad that I had the same seechunk as drtshock
@@ -42,7 +42,7 @@ public class CmdSeeChunk extends FCommand {
         senderMustBeAdmin = false;
 
         this.useParticles = p.getConfig().getBoolean("see-chunk.particles", true);
-        interval = P.p.getConfig().getLong("see-chunk.interval", 10L);
+        interval = SavageFactions.plugin.getConfig().getLong("see-chunk.interval", 10L);
         if (effect == null) {
             effect = ParticleEffect.REDSTONE;
         }
@@ -62,10 +62,10 @@ public class CmdSeeChunk extends FCommand {
     }
 
     private void manageTask() {
-        if (taskID != -1) {
+        if (taskID != - 1) {
             if (seeChunkMap.keySet().size() == 0) {
                 Bukkit.getScheduler().cancelTask(taskID);
-                taskID = -1;
+                taskID = - 1;
             }
         } else {
             startTask();
@@ -73,7 +73,7 @@ public class CmdSeeChunk extends FCommand {
     }
 
     private void startTask() {
-        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, new Runnable() {
+        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, new Runnable() {
             @Override
             public void run() {
                 Iterator itr = seeChunkMap.keySet().iterator();
@@ -123,10 +123,10 @@ public class CmdSeeChunk extends FCommand {
                 continue;
             }
             if (useParticles) {
-                if (P.p.useNonPacketParticles) {
+                if (SavageFactions.plugin.useNonPacketParticles) {
                     // Dust options only exists in the 1.13 API, so we use an
                     // alternative method to achieve this in lower versions.
-                    if (P.p.mc113) {
+                    if (SavageFactions.plugin.mc113) {
                         player.spawnParticle(Particle.REDSTONE, loc, 0, new Particle.DustOptions(Color.RED, 1));
                     } else {
                         player.getWorld().spawnParticle(Particle.REDSTONE, loc, 0, 255, 0, 0, 1);
@@ -138,7 +138,7 @@ public class CmdSeeChunk extends FCommand {
 
 
             } else {
-                Material type = blockY % 5 == 0 ? P.p.REDSTONE_LAMP_ON : P.p.STAINED_GLASS;
+                Material type = blockY % 5 == 0 ? SavageFactions.plugin.REDSTONE_LAMP_ON : SavageFactions.plugin.STAINED_GLASS;
                 VisualizeUtil.addLocation(player, loc, type);
             }
         }

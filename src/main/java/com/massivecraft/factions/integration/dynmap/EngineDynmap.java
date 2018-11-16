@@ -44,6 +44,7 @@ public class EngineDynmap {
     public DynmapAPI dynmapApi;
     public MarkerAPI markerApi;
     public MarkerSet markerset;
+
     private EngineDynmap() {
     }
 
@@ -117,7 +118,7 @@ public class EngineDynmap {
         }
 
         // Shedule non thread safe sync at the end!
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, new Runnable() {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, new Runnable() {
             @Override
             public void run() {
 
@@ -669,7 +670,7 @@ public class EngineDynmap {
         FPlayer playersLeaderObject = faction.getFPlayerAdmin();
         String playersLeader = getHtmlPlayerName(playersLeaderObject);
 
-      ArrayList<FPlayer> playersAdminsList = faction.getFPlayersWhereRole(Role.LEADER);
+        ArrayList<FPlayer> playersAdminsList = faction.getFPlayersWhereRole(Role.LEADER);
         String playersAdminsCount = String.valueOf(playersAdminsList.size());
         String playersAdmins = getHtmlPlayerString(playersAdminsList);
 
