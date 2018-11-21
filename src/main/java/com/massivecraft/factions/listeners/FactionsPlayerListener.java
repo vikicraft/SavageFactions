@@ -1,6 +1,5 @@
 package com.massivecraft.factions.listeners;
 
-
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.CmdFly;
 import com.massivecraft.factions.cmd.CmdSeeChunk;
@@ -162,7 +161,7 @@ public class FactionsPlayerListener implements Listener {
 
     return true;
   }
-
+  @SuppressWarnings("deprecation")
   public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck) {
     if (Conf.playersWhoBypassAllProtection.contains(player.getName())) {
       return true;
@@ -237,6 +236,14 @@ public class FactionsPlayerListener implements Listener {
         case CHEST:
         case ENDER_CHEST:
         case TRAPPED_CHEST:
+        case DISPENSER:
+        case ENCHANTING_TABLE:
+        case DROPPER:
+        case FURNACE:
+        case HOPPER:
+        case ANVIL:
+        case CHIPPED_ANVIL:
+        case DAMAGED_ANVIL:
           action = PermissableAction.CONTAINER;
           break;
         default:
@@ -271,6 +278,14 @@ public class FactionsPlayerListener implements Listener {
         case CHEST:
         case ENDER_CHEST:
         case TRAPPED_CHEST:
+        case DISPENSER:
+        case ENCHANTING_TABLE:
+        case DROPPER:
+        case FURNACE:
+        case HOPPER:
+        case ANVIL:
+        case CHIPPED_ANVIL:
+        case DAMAGED_ANVIL:
           action = PermissableAction.CONTAINER;
           break;
         default:
@@ -435,7 +450,7 @@ public class FactionsPlayerListener implements Listener {
 
     if (SavageFactions.plugin.getConfig().getBoolean("scoreboard.default-enabled", false)) {
       FScoreboard.init(me);
-      FScoreboard.get(me).setDefaultSidebar(new FDefaultSidebar(), SavageFactions.plugin.getConfig().getInt("default-update-interval", 20));
+      FScoreboard.get(me).setDefaultSidebar(new FDefaultSidebar(), SavageFactions.plugin.getConfig().getInt("scoreboard.default-update-interval", 20));
       FScoreboard.get(me).setSidebarVisibility(me.showScoreboard());
     }
 
@@ -915,13 +930,13 @@ public class FactionsPlayerListener implements Listener {
 
     // returns the current attempt count
     public int increment() {
-      long Now = System.currentTimeMillis();
-      if (Now > lastAttempt + 2000) {
+      long now = System.currentTimeMillis();
+      if (now > lastAttempt + 2000) {
         attempts = 1;
       } else {
         attempts++;
       }
-      lastAttempt = Now;
+      lastAttempt = now;
       return attempts;
     }
   }
