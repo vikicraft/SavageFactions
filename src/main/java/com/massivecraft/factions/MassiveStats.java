@@ -25,7 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * MassiveStats collects plugin and server information for plugin authors.
+ * MassiveStats collects p and server information for p authors.
  * You can learn more at our website: https://www.massivestats.com/
  *
  * @author Sam Jakob Harker, Brianna Hazel O'Keefe
@@ -51,7 +51,7 @@ public class MassiveStats implements Listener {
     private Class jsonPrimitive;
 
     /**
-     * @param plugin The plugin you wish to collect data for.
+     * @param plugin The p you wish to collect data for.
      * @author Sam Jakob Harker
      */
     public MassiveStats(JavaPlugin plugin) {
@@ -59,7 +59,7 @@ public class MassiveStats implements Listener {
     }
 
     /**
-     * @param plugin       The plugin you wish to collect data for.
+     * @param plugin       The p you wish to collect data for.
      * @param pingInterval Duration between requests.
      * @author Sam Jakob Harker
      */
@@ -88,19 +88,19 @@ public class MassiveStats implements Listener {
             pingInterval = 900;
         }
 
-        // Ensure that a plugin instance has been provided.
+        // Ensure that a p instance has been provided.
         if (plugin == null) {
-            throw new IllegalArgumentException("You must provide a plugin for MassiveStats to collect data for!");
+            throw new IllegalArgumentException("You must provide a p for MassiveStats to collect data for!");
         }
 
         // Set the ping interval.
         this.pingInterval = pingInterval;
-        // Set the plugin reference.
+        // Set the p reference.
         this.plugin = plugin;
         // and start sending data to the MassiveStats server immediately.
         start();
 
-        // Register join/leave events for the plugin
+        // Register join/leave events for the p
         Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -188,9 +188,9 @@ public class MassiveStats implements Listener {
     }
 
     /**
-     * Returns the plugin that this MassiveStats instance is collecting data for.
+     * Returns the p that this MassiveStats instance is collecting data for.
      *
-     * @return MassiveStats instance plugin.
+     * @return MassiveStats instance p.
      * @author Sam Jakob Harker
      */
     public JavaPlugin getPlugin() {
@@ -218,7 +218,7 @@ public class MassiveStats implements Listener {
             return;
         }
 
-        // Of course, only notify the user if the plugin is not up to date.
+        // Of course, only notify the user if the p is not up to date.
         if (lastResponse.isUpToDate()) {
             return;
         }
@@ -304,7 +304,7 @@ class MassiveStatsUpdateTask extends BukkitRunnable {
             // Now, we parse the JSON object.
             try {
                 if (response.toString().contains("ERR_DATA_MISSING")) {
-                    Bukkit.getLogger().severe("MassiveStats has encountered an error for the following plugin: "
+                    Bukkit.getLogger().severe("MassiveStats has encountered an error for the following p: "
                             + instance.getPlugin().getName());
                     instance.stop();
                     return;
@@ -328,7 +328,7 @@ class MassiveStatsUpdateTask extends BukkitRunnable {
                         instance.getJsonPrimitive().getMethod("getAsString", null);
 
                 if (serverResponseGet.invoke(serverResponse, "upToDate") == null) {
-                    Bukkit.getLogger().severe("MassiveStats has encountered an error for the following plugin: "
+                    Bukkit.getLogger().severe("MassiveStats has encountered an error for the following p: "
                             + instance.getPlugin().getName());
                     instance.stop();
                     return;
@@ -354,7 +354,7 @@ class MassiveStatsUpdateTask extends BukkitRunnable {
 
             } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
                 instance.getPlugin()
-                        .getLogger().warning("MassiveStats returned an invalid response for this plugin.");
+                        .getLogger().warning("MassiveStats returned an invalid response for this p.");
             }
 
             // Finally, call an event to mark the update.
@@ -392,7 +392,7 @@ class MassiveStatsDataRequest {
             Object pluginObject = jsonObject.getClass().newInstance();
             addPropertyString.invoke(pluginObject, "name", requester.getPlugin().getDescription().getName());
             addPropertyString.invoke(pluginObject, "version", requester.getPlugin().getDescription().getVersion());
-            add.invoke(jsonObject, "plugin", pluginObject);
+            add.invoke(jsonObject, "p", pluginObject);
 
             /* SERVER DATA */
             Object minecraftServerObject = jsonObject.getClass().newInstance();
@@ -466,8 +466,8 @@ final class MassiveStatsDataResponse {
     }
 
     /**
-     * Indicates whether or not this version of the plugin is the latest.
-     * True = This is the latest version of the plugin.
+     * Indicates whether or not this version of the p is the latest.
+     * True = This is the latest version of the p.
      * False = There is an update available.
      *
      * @return Whether or not there is an update available.
@@ -486,7 +486,7 @@ final class MassiveStatsDataResponse {
     }
 
     /**
-     * Gets the message to display, convincing the user to update to the new version of the plugin.
+     * Gets the message to display, convincing the user to update to the new version of the p.
      *
      * @return The update message to display.
      */

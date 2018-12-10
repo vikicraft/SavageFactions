@@ -17,9 +17,9 @@ public class SpawnerUpgrades implements Listener {
             if (level != 0) {
             	switch (level)
             	{
-					case 1: lowerSpawnerDelay(e, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-1")); break;
-					case 2: lowerSpawnerDelay(e, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-2")); break;
-					case 3: lowerSpawnerDelay(e, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-3")); break;
+					case 1: lowerSpawnerDelay(e, P.p.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-1")); break;
+					case 2: lowerSpawnerDelay(e, P.p.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-2")); break;
+					case 3: lowerSpawnerDelay(e, P.p.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-3")); break;
             	}
             }
         }

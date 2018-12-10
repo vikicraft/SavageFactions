@@ -3,7 +3,7 @@ package com.massivecraft.factions.integration;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
@@ -31,27 +31,27 @@ public class Econ {
             return;
         }
 
-        String integrationFail = "Economy integration is " + (Conf.econEnabled ? "enabled, but" : "disabled, and") + " the plugin \"Vault\" ";
+        String integrationFail = "Economy integration is " + (Conf.econEnabled ? "enabled, but" : "disabled, and") + " the p \"Vault\" ";
 
         if (Bukkit.getServer().getPluginManager().getPlugin("Vault") == null) {
-            SavageFactions.plugin.log(integrationFail + "is not installed.");
+            P.p.log(integrationFail + "is not installed.");
             return;
         }
 
         RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
-            SavageFactions.plugin.log(integrationFail + "is not hooked into an economy plugin.");
+            P.p.log(integrationFail + "is not hooked into an economy p.");
             return;
         }
         econ = rsp.getProvider();
 
-        SavageFactions.plugin.log("Economy integration through Vault plugin successful.");
+        P.p.log("Economy integration through Vault p successful.");
 
         if (!Conf.econEnabled) {
-            SavageFactions.plugin.log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
+            P.p.log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
         }
 
-        SavageFactions.plugin.cmdBase.cmdHelp.updateHelp();
+        P.p.cmdBase.cmdHelp.updateHelp();
     }
 
     public static boolean shouldBeUsed() {
@@ -82,7 +82,7 @@ public class Econ {
 
     public static void sendBalanceInfo(FPlayer to, EconomyParticipator about) {
         if (!shouldBeUsed()) {
-            SavageFactions.plugin.log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
+            P.p.log(Level.WARNING, "Vault does not appear to be hooked into an economy p.");
             return;
         }
         to.msg("<a>%s's<i> balance is <h>%s<i>.", about.describeTo(to, true), Econ.moneyString(econ.getBalance(about.getAccountId())));

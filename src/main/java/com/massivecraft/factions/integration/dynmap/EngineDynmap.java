@@ -15,7 +15,7 @@ import org.dynmap.utils.TileFlags;
 import java.util.*;
 import java.util.Map.Entry;
 
-// This source code is a heavily modified version of mikeprimms plugin Dynmap-Factions.
+// This source code is a heavily modified version of mikeprimms p Dynmap-Factions.
 public class EngineDynmap {
     // -------------------------------------------- //
     // CONSTANTS
@@ -112,7 +112,7 @@ public class EngineDynmap {
         }
 
         // Shedule non thread safe sync at the end!
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, new Runnable() {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, new Runnable() {
             @Override
             public void run() {
 

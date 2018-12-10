@@ -1,7 +1,7 @@
 name: Factions
 version: ${project.version}-1.4-STABLE
 api-version: 1.13
-main: com.massivecraft.factions.SavageFactions
+main: com.massivecraft.factions.P
 authors: [Olof Larsson, Brett Flannigan, drtshock, ProSavage, AL56AF50, Driftay]
 softdepend: [CoreProtect, PlayerVaults, PlaceholderAPI, MVdWPlaceholderAPI, PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, CAPI, AuthMe, Vault, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag, dynmap, FactionsTop]
 website: www.prosavage.net
@@ -257,7 +257,7 @@ permissions:
   factions.title.color:
     description: set yours or other player's titles to be colored.
   factions.version:
-    description: see the version of the plugin
+    description: see the version of the p
   factions.unclaim:
     description: unclaim the land where you are standing
   factions.unclaimall:

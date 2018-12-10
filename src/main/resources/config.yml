@@ -1,4 +1,4 @@
-# SavageFactions by ProSavage
+# P by ProSavage
 # Report issues: https://github.com/ProSavage/SavageFactions/issues/new
 # Live support: https://discord.gg/W9dv9WP
 # Spigot Site: https://www.spigotmc.org/resources/savagefactions-factionsuuid-reimagined-1-7-1-12.52891/
@@ -127,7 +127,7 @@ scoreboard:
   # {raidable} - true if the faction can be claimed over, otherwise false.
   # {warps} - the number of warps that a faction has set.
   # The title of the scoreboard will be the Faction's tag and colored according to the relation with the player's Faction.
-  # Commenting this section out will cause the info to appear in chat as the plugin originally did.
+  # Commenting this section out will cause the info to appear in chat as the p originally did.
   finfo-enabled: false
 
   # SUPPORTS PLACEHOLDERS
@@ -275,7 +275,7 @@ hcf:
 
 # SUPPORTS PLACEHOLDERS
 show:
-# First line can be {header} for default header, or any string (we recommend &m for smooth lines ;plugin)
+# First line can be {header} for default header, or any string (we recommend &m for smooth lines ;p)
 - '&8&m--------------&7 &8<&e{faction}&8> &8&m--------------'
 - '&6 * &eOwner &7{leader}'
 - '&6 * &eDescription &7{description}'
@@ -302,7 +302,7 @@ show-exempt:
 # You can use any variable here, including fancy messages. Color codes and or tags work fine.
 # Lines that arent defined wont be sent (home not set, faction not peaceful / permanent, dtr freeze)
 map:
-# First line can be {header} for default header, or any string (we recommend &m for smooth lines ;plugin)
+# First line can be {header} for default header, or any string (we recommend &m for smooth lines ;p)
 - '&6* &eFaction &7{faction}'
 - '&6* &eOwner &7{leader}'
 - '&6* &eLand / Power / Max Power: &7{chunks} &8/ &7{power} &8/ &7{maxPower}'

@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 
@@ -124,7 +124,7 @@ public class FCmdRoot extends FCommand {
         this.setHelpShort("The faction base command");
         this.helpLong.add(p.txt.parseTags("<i>This command contains all faction stuff."));
 
-        //this.subCommands.add(plugin.cmdHelp);
+        //this.subCommands.add(p.cmdHelp);
 
         this.addSubCommand(this.cmdAdmin);
         this.addSubCommand(this.cmdAutoClaim);
@@ -218,22 +218,22 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdSetMaxVaults);
 
         if (Bukkit.getServer().getPluginManager().getPlugin("CoreProtect") != null) {
-            SavageFactions.plugin.log("Found CoreProtect, enabling Inspect");
+            P.p.log("Found CoreProtect, enabling Inspect");
             this.addSubCommand(this.cmdInspect);
         } else {
-            SavageFactions.plugin.log("CoreProtect not found, disabling Inspect");
+            P.p.log("CoreProtect not found, disabling Inspect");
         }
 
-        if (SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight", false)) {
+        if (P.p.getConfig().getBoolean("enable-faction-flight", false)) {
             this.addSubCommand(this.cmdFly);
         }
         if (Bukkit.getServer().getPluginManager().isPluginEnabled("FactionsTop")) {
-            SavageFactions.plugin.log(Level.INFO, "Found FactionsTop plugin. Disabling our own /f top command.");
+            P.p.log(Level.INFO, "Found FactionsTop p. Disabling our own /f top command.");
         } else {
-            SavageFactions.plugin.log(Level.INFO, "Enabling FactionsTop command, this is a very basic /f top please get a dedicated /f top resource if you want land calculation etc.");
+            P.p.log(Level.INFO, "Enabling FactionsTop command, this is a very basic /f top please get a dedicated /f top resource if you want land calculation etc.");
             this.addSubCommand(this.cmdTop);
         }
-        if (SavageFactions.plugin.getConfig().getBoolean("fpaypal.Enabled")) {
+        if (P.p.getConfig().getBoolean("fpaypal.Enabled")) {
             this.addSubCommand(this.cmdPaypalSet);
             this.addSubCommand(this.cmdPaypalSee);
         }

@@ -2,7 +2,7 @@ package com.massivecraft.factions.zcore;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -224,7 +224,7 @@ public abstract class MCommand<T extends MPlugin> {
         }
 
         if (args.size() > 0) {
-            ret.append(p.txt.parseTags("<plugin> "));
+            ret.append(p.txt.parseTags("<p> "));
             ret.append(TextUtil.implode(args, " "));
         }
 
@@ -307,7 +307,7 @@ public abstract class MCommand<T extends MPlugin> {
             s = s.replace("{power}", power);
         }
         if (s.contains("{group}")) {
-            String group = SavageFactions.plugin.getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(player.getId())));
+            String group = P.p.getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(player.getId())));
             s = s.replace("{group}", group);
         }
         return s;

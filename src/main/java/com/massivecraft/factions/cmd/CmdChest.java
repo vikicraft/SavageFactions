@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
@@ -29,7 +29,7 @@ public class CmdChest extends FCommand {
     public void perform() {
 
 
-        if (!SavageFactions.plugin.getConfig().getBoolean("fchest.Enabled")) {
+        if (!P.p.getConfig().getBoolean("fchest.Enabled")) {
             fme.sendMessage("This command is disabled!");
             return;
         }

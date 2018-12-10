@@ -98,9 +98,9 @@ public class CmdCreate extends FCommand {
         msg(TL.COMMAND_CREATE_YOUSHOULD, p.cmdBase.cmdDescription.getUseageTemplate());
 
         if (Conf.logFactionCreate) {
-            SavageFactions.plugin.log(fme.getName() + TL.COMMAND_CREATE_CREATEDLOG.toString() + tag);
+            P.p.log(fme.getName() + TL.COMMAND_CREATE_CREATEDLOG.toString() + tag);
         }
-        if (SavageFactions.plugin.getConfig().getBoolean("fpaypal.Enabled")) {
+        if (P.p.getConfig().getBoolean("fpaypal.Enabled")) {
             this.fme.msg(TL.COMMAND_PAYPALSET_CREATED);
         }
     }

@@ -97,7 +97,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.autoWarZoneEnabled = false;
         this.loginPvpDisabled = Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0;
         this.powerBoost = 0.0;
-        this.showScoreboard = SavageFactions.plugin.getConfig().getBoolean("scoreboard.default-enabled", false);
+        this.showScoreboard = P.p.getConfig().getBoolean("scoreboard.default-enabled", false);
         this.kills = 0;
         this.deaths = 0;
         this.mapHeight = Conf.mapHeight;
@@ -124,7 +124,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.spyingChat = other.spyingChat;
         this.lastStoodAt = other.lastStoodAt;
         this.isAdminBypassing = other.isAdminBypassing;
-        this.showScoreboard = SavageFactions.plugin.getConfig().getBoolean("scoreboard.default-enabled", true);
+        this.showScoreboard = P.p.getConfig().getBoolean("scoreboard.default-enabled", true);
         this.kills = other.kills;
         this.deaths = other.deaths;
         this.mapHeight = Conf.mapHeight;
@@ -207,7 +207,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void setAutoLeave(boolean willLeave) {
         this.willAutoLeave = willLeave;
-        SavageFactions.plugin.debug(name + " set autoLeave to " + willLeave);
+        P.p.debug(name + " set autoLeave to " + willLeave);
     }
 
     public long getLastFrostwalkerMessage() {
@@ -617,10 +617,10 @@ public abstract class MemoryFPlayer implements FPlayer {
         boolean showChat = true;
         if (showInfoBoard(toShow)) {
             FScoreboard.get(this).setTemporarySidebar(new FInfoSidebar(toShow));
-            showChat = SavageFactions.plugin.getConfig().getBoolean("scoreboard.also-send-chat", true);
+            showChat = P.p.getConfig().getBoolean("scoreboard.also-send-chat", true);
         }
         if (showChat) {
-            this.sendMessage(SavageFactions.plugin.txt.parse(TL.FACTION_LEAVE.format(from.getTag(this), toShow.getTag(this))));
+            this.sendMessage(P.p.txt.parse(TL.FACTION_LEAVE.format(from.getTag(this), toShow.getTag(this))));
         }
     }
 
@@ -635,7 +635,7 @@ public abstract class MemoryFPlayer implements FPlayer {
      * @return true if should show, otherwise false.
      */
     public boolean showInfoBoard(Faction toShow) {
-        return showScoreboard && !toShow.isWarZone() && !toShow.isWilderness() && !toShow.isSafeZone() && SavageFactions.plugin.getConfig().contains("scoreboard.finfo") && SavageFactions.plugin.getConfig().getBoolean("scoreboard.finfo-enabled", false) && FScoreboard.get(this) != null;
+        return showScoreboard && !toShow.isWarZone() && !toShow.isWilderness() && !toShow.isSafeZone() && P.p.getConfig().contains("scoreboard.finfo") && P.p.getConfig().getBoolean("scoreboard.finfo-enabled", false) && FScoreboard.get(this) != null;
     }
 
     @Override
@@ -699,7 +699,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             }
 
             if (Conf.logFactionLeave) {
-                SavageFactions.plugin.log(TL.LEAVE_LEFT.format(this.getName(), myFaction.getTag()));
+                P.p.log(TL.LEAVE_LEFT.format(this.getName(), myFaction.getTag()));
             }
         }
 
@@ -714,7 +714,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
             Factions.getInstance().removeFaction(myFaction.getId());
             if (Conf.logFactionDisband) {
-                SavageFactions.plugin.log(TL.LEAVE_DISBANDEDLOG.format(myFaction.getTag(), myFaction.getId(), this.getName()));
+                P.p.log(TL.LEAVE_DISBANDEDLOG.format(myFaction.getTag(), myFaction.getId(), this.getName()));
             }
         }
     }
@@ -732,16 +732,16 @@ public abstract class MemoryFPlayer implements FPlayer {
         Faction myFaction = getFaction();
         Faction currentFaction = Board.getInstance().getFactionAt(flocation);
         int ownedLand = forFaction.getLandRounded();
-        int factionBuffer = SavageFactions.plugin.getConfig().getInt("hcf.buffer-zone", 0);
-        int worldBuffer = SavageFactions.plugin.getConfig().getInt("world-border.buffer", 0);
+        int factionBuffer = P.p.getConfig().getInt("hcf.buffer-zone", 0);
+        int worldBuffer = P.p.getConfig().getInt("world-border.buffer", 0);
 
         if (Conf.worldGuardChecking && Worldguard.checkForRegionsInChunk(flocation)) {
             // Checks for WorldGuard regions in the chunk attempting to be claimed
-            error = SavageFactions.plugin.txt.parse(TL.CLAIM_PROTECTED.toString());
-        } else if (flocation.isOutsideWorldBorder(SavageFactions.plugin.getConfig().getInt("world-border.buffer", 0))) {
-            error = SavageFactions.plugin.txt.parse(TL.CLAIM_OUTSIDEWORLDBORDER.toString());
+            error = P.p.txt.parse(TL.CLAIM_PROTECTED.toString());
+        } else if (flocation.isOutsideWorldBorder(P.p.getConfig().getInt("world-border.buffer", 0))) {
+            error = P.p.txt.parse(TL.CLAIM_OUTSIDEWORLDBORDER.toString());
         } else if (Conf.worldsNoClaiming.contains(flocation.getWorldName())) {
-            error = SavageFactions.plugin.txt.parse(TL.CLAIM_DISABLED.toString());
+            error = P.p.txt.parse(TL.CLAIM_DISABLED.toString());
         } else if (this.isAdminBypassing()) {
             return true;
         } else if (forFaction.isSafeZone() && Permission.MANAGE_SAFE_ZONE.has(getPlayer())) {
@@ -751,50 +751,50 @@ public abstract class MemoryFPlayer implements FPlayer {
         } else if (currentFaction.getAccess(this, PermissableAction.TERRITORY) == Access.ALLOW) {
             return true;
         } else if (myFaction != forFaction) {
-            error = SavageFactions.plugin.txt.parse(TL.CLAIM_CANTCLAIM.toString(), forFaction.describeTo(this));
+            error = P.p.txt.parse(TL.CLAIM_CANTCLAIM.toString(), forFaction.describeTo(this));
         } else if (forFaction == currentFaction) {
-            error = SavageFactions.plugin.txt.parse(TL.CLAIM_ALREADYOWN.toString(), forFaction.describeTo(this, true));
+            error = P.p.txt.parse(TL.CLAIM_ALREADYOWN.toString(), forFaction.describeTo(this, true));
         } else if (this.getRole().value < Role.MODERATOR.value) {
-            error = SavageFactions.plugin.txt.parse(TL.CLAIM_MUSTBE.toString(), Role.MODERATOR.getTranslation());
+            error = P.p.txt.parse(TL.CLAIM_MUSTBE.toString(), Role.MODERATOR.getTranslation());
         } else if (forFaction.getFPlayers().size() < Conf.claimsRequireMinFactionMembers) {
-            error = SavageFactions.plugin.txt.parse(TL.CLAIM_MEMBERS.toString(), Conf.claimsRequireMinFactionMembers);
+            error = P.p.txt.parse(TL.CLAIM_MEMBERS.toString(), Conf.claimsRequireMinFactionMembers);
         } else if (currentFaction.isSafeZone()) {
-            error = SavageFactions.plugin.txt.parse(TL.CLAIM_SAFEZONE.toString());
+            error = P.p.txt.parse(TL.CLAIM_SAFEZONE.toString());
         } else if (currentFaction.isWarZone()) {
-            error = SavageFactions.plugin.txt.parse(TL.CLAIM_WARZONE.toString());
-        } else if (SavageFactions.plugin.getConfig().getBoolean("hcf.allow-overclaim", true) && ownedLand >= forFaction.getPowerRounded()) {
-            error = SavageFactions.plugin.txt.parse(TL.CLAIM_POWER.toString());
+            error = P.p.txt.parse(TL.CLAIM_WARZONE.toString());
+        } else if (P.p.getConfig().getBoolean("hcf.allow-overclaim", true) && ownedLand >= forFaction.getPowerRounded()) {
+            error = P.p.txt.parse(TL.CLAIM_POWER.toString());
         } else if (Conf.claimedLandsMax != 0 && ownedLand >= Conf.claimedLandsMax && forFaction.isNormal()) {
-            error = SavageFactions.plugin.txt.parse(TL.CLAIM_LIMIT.toString());
+            error = P.p.txt.parse(TL.CLAIM_LIMIT.toString());
         } else if (currentFaction.getRelationTo(forFaction) == Relation.ALLY) {
-            error = SavageFactions.plugin.txt.parse(TL.CLAIM_ALLY.toString());
+            error = P.p.txt.parse(TL.CLAIM_ALLY.toString());
         } else if (Conf.claimsMustBeConnected && !this.isAdminBypassing() && myFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.getInstance().isConnectedLocation(flocation, myFaction) && (!Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !currentFaction.isNormal())) {
             if (Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction) {
-                error = SavageFactions.plugin.txt.parse(TL.CLAIM_CONTIGIOUS.toString());
+                error = P.p.txt.parse(TL.CLAIM_CONTIGIOUS.toString());
             } else {
-                error = SavageFactions.plugin.txt.parse(TL.CLAIM_FACTIONCONTIGUOUS.toString());
+                error = P.p.txt.parse(TL.CLAIM_FACTIONCONTIGUOUS.toString());
             }
         } else if (factionBuffer > 0 && Board.getInstance().hasFactionWithin(flocation, myFaction, factionBuffer)) {
-            error = SavageFactions.plugin.txt.parse(TL.CLAIM_TOOCLOSETOOTHERFACTION.format(factionBuffer));
+            error = P.p.txt.parse(TL.CLAIM_TOOCLOSETOOTHERFACTION.format(factionBuffer));
         } else if (flocation.isOutsideWorldBorder(worldBuffer)) {
             if (worldBuffer > 0) {
-                error = SavageFactions.plugin.txt.parse(TL.CLAIM_OUTSIDEBORDERBUFFER.format(worldBuffer));
+                error = P.p.txt.parse(TL.CLAIM_OUTSIDEBORDERBUFFER.format(worldBuffer));
             } else {
-                error = SavageFactions.plugin.txt.parse(TL.CLAIM_OUTSIDEWORLDBORDER.toString());
+                error = P.p.txt.parse(TL.CLAIM_OUTSIDEWORLDBORDER.toString());
             }
         } else if (currentFaction.isNormal()) {
             if (myFaction.isPeaceful()) {
-                error = SavageFactions.plugin.txt.parse(TL.CLAIM_PEACEFUL.toString(), currentFaction.getTag(this));
+                error = P.p.txt.parse(TL.CLAIM_PEACEFUL.toString(), currentFaction.getTag(this));
             } else if (currentFaction.isPeaceful()) {
-                error = SavageFactions.plugin.txt.parse(TL.CLAIM_PEACEFULTARGET.toString(), currentFaction.getTag(this));
+                error = P.p.txt.parse(TL.CLAIM_PEACEFULTARGET.toString(), currentFaction.getTag(this));
             } else if (!currentFaction.hasLandInflation()) {
                 // TODO more messages WARN current faction most importantly
-                error = SavageFactions.plugin.txt.parse(TL.CLAIM_THISISSPARTA.toString(), currentFaction.getTag(this));
-            } else if (currentFaction.hasLandInflation() && !SavageFactions.plugin.getConfig().getBoolean("hcf.allow-overclaim", true)) {
+                error = P.p.txt.parse(TL.CLAIM_THISISSPARTA.toString(), currentFaction.getTag(this));
+            } else if (currentFaction.hasLandInflation() && !P.p.getConfig().getBoolean("hcf.allow-overclaim", true)) {
                 // deny over claim when it normally would be allowed.
-                error = SavageFactions.plugin.txt.parse(TL.CLAIM_OVERCLAIM_DISABLED.toString());
+                error = P.p.txt.parse(TL.CLAIM_OVERCLAIM_DISABLED.toString());
             } else if (!Board.getInstance().isBorderLocation(flocation)) {
-                error = SavageFactions.plugin.txt.parse(TL.CLAIM_BORDER.toString());
+                error = P.p.txt.parse(TL.CLAIM_BORDER.toString());
             }
         }
         // TODO: Add more else if statements.
@@ -814,7 +814,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void msg(String str, Object... args) {
-        this.sendMessage(SavageFactions.plugin.txt.parse(str, args));
+        this.sendMessage(P.p.txt.parse(str, args));
     }
 
     public void msg(TL translation, Object... args) {
@@ -857,7 +857,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         if (!damage) {
             msg(TL.COMMAND_FLY_CHANGE, fly ? "enabled" : "disabled");
             if (!fly) {
-                sendMessage(TL.COMMAND_FLY_COOLDOWN.toString().replace("{amount}", SavageFactions.plugin.getConfig().getInt("fly-falldamage-cooldown", 3) + ""));
+                sendMessage(TL.COMMAND_FLY_COOLDOWN.toString().replace("{amount}", P.p.getConfig().getInt("fly-falldamage-cooldown", 3) + ""));
             }
 
         } else {
@@ -866,7 +866,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
         // If leaving fly mode, don't let them take fall damage for x seconds.
         if (!fly) {
-            int cooldown = SavageFactions.plugin.getConfig().getInt("fly-falldamage-cooldown", 3);
+            int cooldown = P.p.getConfig().getInt("fly-falldamage-cooldown", 3);
             CmdFly.flyMap.remove(player.getName());
 
             // If the value is 0 or lower, make them take fall damage.
@@ -874,7 +874,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             // Short task so we're just doing it in method. Not clean but eh.
             if (cooldown > 0) {
                 setTakeFallDamage(false);
-                Bukkit.getScheduler().runTaskLater(SavageFactions.plugin, new Runnable() {
+                Bukkit.getScheduler().runTaskLater(P.p, new Runnable() {
                     @Override
                     public void run() {
                         setTakeFallDamage(true);
@@ -1186,7 +1186,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         Board.getInstance().setFactionAt(forFaction, flocation);
 
         if (Conf.logLandClaims) {
-            SavageFactions.plugin.log(TL.CLAIM_CLAIMEDLOG.toString(), this.getName(), flocation.getCoordString(), forFaction.getTag());
+            P.p.log(TL.CLAIM_CLAIMEDLOG.toString(), this.getName(), flocation.getCoordString(), forFaction.getTag());
         }
 
         return true;
@@ -1210,7 +1210,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     @Override
     public boolean hasMoney(int amt) {
-        Economy econ = SavageFactions.plugin.getEcon();
+        Economy econ = P.p.getEcon();
         if (econ.getBalance(getPlayer()) >= amt) {
             return true;
         } else {
@@ -1223,7 +1223,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     @Override
     public void takeMoney(int amt) {
         if (hasMoney(amt)) {
-            Economy econ = SavageFactions.plugin.getEcon();
+            Economy econ = P.p.getEcon();
             econ.withdrawPlayer(getPlayer(), amt);
             sendMessage(TL.GENERIC_MONEYTAKE.toString().replace("{amount}", amt + ""));
         }

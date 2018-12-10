@@ -229,7 +229,7 @@ public enum TL {
 
     COMMAND_CONVERT_BACKEND_RUNNING("&c&l[!]&7 Already running that backend."),
     COMMAND_CONVERT_BACKEND_INVALID("&c&l[!]&7 Invalid backend"),
-    COMMAND_CONVERT_DESCRIPTION("Convert the plugin backend"),
+    COMMAND_CONVERT_DESCRIPTION("Convert the p backend"),
 
     COMMAND_COORDS_MESSAGE("&c&l[!] &7{player}&7's coords are &c{x}&7,&c{y}&7,&c{z}&7 in &c{world}"),
     COMMAND_COORDS_DESCRIPTION("broadcast your coords to your faction"),
@@ -430,10 +430,10 @@ public enum TL {
     COMMAND_MONEYTRANSFERFF_DESCRIPTION("Transfer f -> f"),
     COMMAND_MONEYTRANSFERFF_TRANSFER("&c&l[!]&7 &c%1$s&7 transferred&c %2$s &7from the faction &c\"%3$s\"&7 to the faction&c \"%4$s\"&7"),
 
-    COMMAND_MONEYTRANSFERFP_DESCRIPTION("Transfer f -> plugin"),
+    COMMAND_MONEYTRANSFERFP_DESCRIPTION("Transfer f -> p"),
     COMMAND_MONEYTRANSFERFP_TRANSFER("&c&l[!]&7 &c%1$s &7transferred&c %2$s &7from the faction&c \"%3$s\" &7to the player &c\"%4$s\""),
 
-    COMMAND_MONEYTRANSFERPF_DESCRIPTION("Transfer plugin -> f"),
+    COMMAND_MONEYTRANSFERPF_DESCRIPTION("Transfer p -> f"),
     COMMAND_MONEYTRANSFERPF_TRANSFER("&c&l[!]&7 &c%1$s&7 transferred &c%2$s&7 from the player &c\"%3$s\" &7to the faction&c \"%4$s\""),
 
     COMMAND_MONEYWITHDRAW_DESCRIPTION("Withdraw money"),
@@ -522,8 +522,8 @@ public enum TL {
     COMMAND_POWER_PENALTY(" (penalty: "),
     COMMAND_POWER_DESCRIPTION("&a&l» &7Show player &apower &7info"),
 
-    COMMAND_POWERBOOST_HELP_1("&c&l[!]&7 You must specify \"plugin\" or \"player\" to target a player or \"f\" or \"faction\" to target a faction."),
-    COMMAND_POWERBOOST_HELP_2("&c&l[!]&7 ex. /f powerboost plugin SomePlayer 0.5  -or-  /f powerboost f SomeFaction -5"),
+    COMMAND_POWERBOOST_HELP_1("&c&l[!]&7 You must specify \"p\" or \"player\" to target a player or \"f\" or \"faction\" to target a faction."),
+    COMMAND_POWERBOOST_HELP_2("&c&l[!]&7 ex. /f powerboost p SomePlayer 0.5  -or-  /f powerboost f SomeFaction -5"),
     COMMAND_POWERBOOST_INVALIDNUM("<b>You must specify a valid numeric value for the power bonus/penalty amount."),
     COMMAND_POWERBOOST_PLAYER("Player \"%1$s\""),
     COMMAND_POWERBOOST_FACTION("Faction \"%1$s\""),
@@ -733,7 +733,7 @@ public enum TL {
 
     COMMAND_VERSION_NAME("&c&l[!]&7 &c&k||| &r&4SavageFactions&7 &c&k|||&r &c» &7By ProSavage"),
     COMMAND_VERSION_VERSION("&7Version &c» &7%1$s"),
-    COMMAND_VERSION_DESCRIPTION("Show plugin and translation version information"),
+    COMMAND_VERSION_DESCRIPTION("Show p and translation version information"),
 
     COMMAND_WARUNCLAIMALL_DESCRIPTION("Unclaim all warzone land"),
     COMMAND_WARUNCLAIMALL_SUCCESS("<i>You unclaimed ALL war zone land."),
@@ -806,10 +806,10 @@ public enum TL {
     GENERIC_NOPERMISSION("<b>You don't have permission to %1$s."),
     GENERIC_FPERM_NOPERMISSION("&7The faction leader does not allow you to &c%1$s."),
     GENERIC_DOTHAT("do that"),  //Ugh nuke this from high orbit
-    GENERIC_NOPLAYERMATCH("<b>No player match found for \"<plugin>%1$s<b>\"."),
-    GENERIC_NOPLAYERFOUND("<b>No player \"<plugin>%1$s<b>\" could not be found."),
+    GENERIC_NOPLAYERMATCH("<b>No player match found for \"<p>%1$s<b>\"."),
+    GENERIC_NOPLAYERFOUND("<b>No player \"<p>%1$s<b>\" could not be found."),
     GENERIC_ARGS_TOOFEW("<b>Too few arguments. <i>Use like this:"),
-    GENERIC_ARGS_TOOMANY("<b>Strange argument \"<plugin>%1$s<b>\". <i>Use the command like this:"),
+    GENERIC_ARGS_TOOMANY("<b>Strange argument \"<p>%1$s<b>\". <i>Use the command like this:"),
     GENERIC_DEFAULTDESCRIPTION("Default faction description :("),
     GENERIC_OWNERS("Owner(s): %1$s"),
     GENERIC_PUBLICLAND("Public faction land."),

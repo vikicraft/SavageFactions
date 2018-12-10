@@ -37,7 +37,7 @@ public abstract class MPlugin extends JavaPlugin {
     //holds f stuck taskids
     public Map<UUID, Integer> stuckMap = new HashMap<>();
     // These are not supposed to be used directly.
-    // They are loaded and used through the TextUtil instance for the plugin.
+    // They are loaded and used through the TextUtil instance for the p.
     public Map<String, String> rawTags = new LinkedHashMap<>();
     protected boolean loadSuccessful = false;
     private Integer saveTask = null;
@@ -80,7 +80,7 @@ public abstract class MPlugin extends JavaPlugin {
         this.txt = new TextUtil();
         initTXT();
 
-        // attempt to get first command defined in plugin.yml as reference command, if any commands are defined in there
+        // attempt to get first command defined in p.yml as reference command, if any commands are defined in there
         // reference command will be used to prevent "unknown command" console messages
         try {
             Map<String, Map<String, Object>> refCmd = this.getDescription().getCommands();
@@ -181,7 +181,7 @@ public abstract class MPlugin extends JavaPlugin {
             this.getServer().getScheduler().cancelTask(saveTask);
             saveTask = null;
         }
-        // only save data if plugin actually loaded successfully
+        // only save data if p actually loaded successfully
         if (loadSuccessful) {
             Factions.getInstance().forceSave();
             FPlayers.getInstance().forceSave();
@@ -192,7 +192,7 @@ public abstract class MPlugin extends JavaPlugin {
 
     // -------------------------------------------- //
     // Some inits...
-    // You are supposed to override these in the plugin if you aren't satisfied with the defaults
+    // You are supposed to override these in the p if you aren't satisfied with the defaults
     // The goal is that you always will be satisfied though.
     // -------------------------------------------- //
 
@@ -218,7 +218,7 @@ public abstract class MPlugin extends JavaPlugin {
         this.rawTags.put("b", "<rose>"); // bad
         this.rawTags.put("h", "<pink>"); // highligh
         this.rawTags.put("c", "<aqua>"); // command
-        this.rawTags.put("plugin", "<teal>"); // parameter
+        this.rawTags.put("p", "<teal>"); // parameter
     }
 
     public void initTXT() {
@@ -242,7 +242,7 @@ public abstract class MPlugin extends JavaPlugin {
     // COMMAND HANDLING
     // -------------------------------------------- //
 
-    // can be overridden by SavageFactions method, to provide option
+    // can be overridden by P method, to provide option
     public boolean logPlayerCommands() {
         return true;
     }

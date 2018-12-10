@@ -112,9 +112,9 @@ public class CmdJoin extends FCommand {
 
         if (Conf.logFactionJoin) {
             if (samePlayer) {
-                SavageFactions.plugin.log(TL.COMMAND_JOIN_JOINEDLOG.toString(), fplayer.getName(), faction.getTag());
+                P.p.log(TL.COMMAND_JOIN_JOINEDLOG.toString(), fplayer.getName(), faction.getTag());
             } else {
-                SavageFactions.plugin.log(TL.COMMAND_JOIN_MOVEDLOG.toString(), fme.getName(), fplayer.getName(), faction.getTag());
+                P.p.log(TL.COMMAND_JOIN_MOVEDLOG.toString(), fme.getName(), fplayer.getName(), faction.getTag());
             }
         }
     }

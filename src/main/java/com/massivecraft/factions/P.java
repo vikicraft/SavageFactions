@@ -44,11 +44,11 @@ import java.util.*;
 import java.util.logging.Level;
 
 
-public class SavageFactions extends MPlugin {
+public class P extends MPlugin {
 
-    // Our single plugin instance.
+    // Our single p instance.
     // Single 4 life.
-    public static SavageFactions plugin;
+    public static P p;
     public static Permission perms = null;
 
 
@@ -74,8 +74,8 @@ public class SavageFactions extends MPlugin {
     private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
     private boolean mvdwPlaceholderAPIManager = false;
 
-    public SavageFactions() {
-        plugin = this;
+    public P() {
+        p = this;
     }
 
     public boolean getLocked() {
@@ -117,14 +117,14 @@ public class SavageFactions extends MPlugin {
 
 
         // Vault dependency check.
-        if (SavageFactions.plugin.getServer().getPluginManager().getPlugin("Vault") == null) {
-            SavageFactions.plugin.log("Vault is not present, the plugin will not run properly.");
+        if (P.p.getServer().getPluginManager().getPlugin("Vault") == null) {
+            P.p.log("Vault is not present, the p will not run properly.");
             this.onDisable();
             Bukkit.getScheduler().scheduleSyncDelayedTask(this,
                     new Runnable() {
                         @Override
                         public void run() {
-                            SavageFactions.plugin.getServer().getPluginManager().disablePlugin(SavageFactions.plugin);
+                            P.p.getServer().getPluginManager().disablePlugin(P.p);
                         }
                     }, 20L);
             return;
@@ -133,13 +133,13 @@ public class SavageFactions extends MPlugin {
 
         int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
         if (version == 7) {
-            SavageFactions.plugin.log("Minecraft Version 1.7 found, disabling banners, itemflags inside GUIs, and Titles.");
+            P.p.log("Minecraft Version 1.7 found, disabling banners, itemflags inside GUIs, and Titles.");
             mc17 = true;
         } else if (version == 8) {
-            SavageFactions.plugin.log("Minecraft Version 1.8 found, Title Fadeouttime etc will not be configurable.");
+            P.p.log("Minecraft Version 1.8 found, Title Fadeouttime etc will not be configurable.");
             mc18 = true;
         } else if (version == 13) {
-            SavageFactions.plugin.log("Minecraft Version 1.13 found, New Items will be used.");
+            P.p.log("Minecraft Version 1.13 found, New Items will be used.");
             mc113 = true;
             changeItemIDSInConfig();
         }
@@ -200,10 +200,10 @@ public class SavageFactions extends MPlugin {
 
         if (version > 8) {
             useNonPacketParticles = true;
-            SavageFactions.plugin.log("Minecraft Version 1.9 or higher found, using non packet based particle API");
+            P.p.log("Minecraft Version 1.9 or higher found, using non packet based particle API");
         }
 
-        if (SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight")) {
+        if (P.p.getConfig().getBoolean("enable-faction-flight")) {
             factionsFlight = true;
         }
 
@@ -221,11 +221,11 @@ public class SavageFactions extends MPlugin {
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(this.refCommand).setExecutor(this);
 
-        if (SavageFactions.plugin.getDescription().getFullName().contains("BETA")) {
+        if (P.p.getDescription().getFullName().contains("BETA")) {
             divider();
-            System.out.println("You are using a BETA version of the plugin!");
+            System.out.println("You are using a BETA version of the p!");
             System.out.println("This comes with risks of small bugs in newer features!");
-            System.out.println("For support head to: https://github.com/ProSavage/SavageFactions/issues");
+            System.out.println("For support head to: https://github.com/ProSavage/P/issues");
             divider();
         }
 
@@ -342,7 +342,7 @@ public class SavageFactions extends MPlugin {
     private void changeItemIDSInConfig() {
 
 
-        SavageFactions.plugin.log("Starting conversion of legacy material in config to 1.13 materials.");
+        P.p.log("Starting conversion of legacy material in config to 1.13 materials.");
 
 
         replaceStringInConfig("fperm-gui.relation.materials.recruit", "WOOD_SWORD", "WOODEN_SWORD");
@@ -383,7 +383,7 @@ public class SavageFactions extends MPlugin {
 
     public void replaceStringInConfig(String path, String stringToReplace, String replacementString) {
         if (getConfig().getString(path).equals(stringToReplace)) {
-            SavageFactions.plugin.log("Replacing legacy material '" + stringToReplace + "' with '" + replacementString + "' for config node '" + path + "'.");
+            P.p.log("Replacing legacy material '" + stringToReplace + "' with '" + replacementString + "' for config node '" + path + "'.");
             getConfig().set(path, replacementString);
         }
     }
@@ -438,7 +438,7 @@ public class SavageFactions extends MPlugin {
 
     @Override
     public void onDisable() {
-        // only save data if plugin actually completely loaded successfully
+        // only save data if p actually completely loaded successfully
         if (this.loadSuccessful) {
             Conf.save();
         }
@@ -483,14 +483,14 @@ public class SavageFactions extends MPlugin {
     public ItemStack createLazyItem(Material material, int amount, short datavalue, String name, String lore) {
         ItemStack item = new ItemStack(material, amount, datavalue);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(color(SavageFactions.plugin.getConfig().getString(name)));
-        meta.setLore(colorList(SavageFactions.plugin.getConfig().getStringList(lore)));
+        meta.setDisplayName(color(P.p.getConfig().getString(name)));
+        meta.setLore(colorList(P.p.getConfig().getStringList(lore)));
         item.setItemMeta(meta);
         return item;
     }
 
     public Economy getEcon() {
-        RegisteredServiceProvider<Economy> rsp = SavageFactions.plugin.getServer().getServicesManager().getRegistration(Economy.class);
+        RegisteredServiceProvider<Economy> rsp = P.p.getServer().getServicesManager().getRegistration(Economy.class);
         Economy econ = rsp.getProvider();
         return econ;
     }
@@ -511,7 +511,7 @@ public class SavageFactions extends MPlugin {
             return handleCommand(sender, "/f help", false);
         }
 
-        // otherwise, needs to be handled; presumably another plugin directly ran the command
+        // otherwise, needs to be handled; presumably another p directly ran the command
         String cmd = Conf.baseCommandAliases.isEmpty() ? "/f" : "/" + Conf.baseCommandAliases.get(0);
         return handleCommand(sender, cmd + " " + TextUtil.implode(Arrays.asList(split), " "), false);
     }
@@ -521,10 +521,10 @@ public class SavageFactions extends MPlugin {
         as.setVisible(false); //Makes the ArmorStand invisible
         as.setGravity(false); //Make sure it doesn't fall
         as.setCanPickupItems(false); //I'm not sure what happens if you leave this as it is, but you might as well disable it
-        as.setCustomName(SavageFactions.plugin.color(text)); //Set this to the text you want
+        as.setCustomName(P.p.color(text)); //Set this to the text you want
         as.setCustomNameVisible(true); //This makes the text appear no matter if your looking at the entity or not
         final ArmorStand armorStand = as;
-        Bukkit.getScheduler().scheduleSyncDelayedTask(SavageFactions.plugin, new Runnable() {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(P.p, new Runnable() {
             @Override
             public void run() {
                 Bukkit.broadcastMessage("removing stand");
@@ -544,7 +544,7 @@ public class SavageFactions extends MPlugin {
         return 3;
     }
 
-    // If another plugin is handling insertion of chat tags, this should be used to notify Factions
+    // If another p is handling insertion of chat tags, this should be used to notify Factions
     public void handleFactionTagExternally(boolean notByFactions) {
         Conf.chatTagHandledByAnotherPlugin = notByFactions;
     }
