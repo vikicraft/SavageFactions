@@ -3,9 +3,9 @@ package com.massivecraft.factions.zcore.fperms;
 import org.bukkit.ChatColor;
 
 public enum Access {
-    ALLOW("Allow", ChatColor.GREEN),
-    DENY("Deny", ChatColor.DARK_RED),
-    UNDEFINED("Undefined", ChatColor.GRAY);
+    ALLOW("Autoriser", ChatColor.GREEN),
+    DENY("Interdire", ChatColor.DARK_RED),
+    UNDEFINED("Par défaut", ChatColor.GRAY);
 
     private String name;
     private ChatColor color;

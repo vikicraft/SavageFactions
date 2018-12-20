@@ -664,7 +664,7 @@ public class EngineDynmap {
         FPlayer playersLeaderObject = faction.getFPlayerAdmin();
         String playersLeader = getHtmlPlayerName(playersLeaderObject);
 
-        ArrayList<FPlayer> playersAdminsList = faction.getFPlayersWhereRole(Role.LEADER);
+        ArrayList<FPlayer> playersAdminsList = faction.getFPlayersWhereRole(Role.ADMIN);
         String playersAdminsCount = String.valueOf(playersAdminsList.size());
         String playersAdmins = getHtmlPlayerString(playersAdminsList);
 

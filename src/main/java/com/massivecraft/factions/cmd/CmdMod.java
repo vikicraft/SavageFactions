@@ -52,7 +52,7 @@ public class CmdMod extends FCommand {
             return;
         }
 
-        if (fme != null && fme.getRole() != Role.LEADER && !permAny) {
+        if (fme != null && fme.getRole() != Role.ADMIN && !permAny) {
             msg(TL.COMMAND_MOD_NOTADMIN);
             return;
         }
@@ -62,7 +62,7 @@ public class CmdMod extends FCommand {
             return;
         }
 
-        if (you.getRole() == Role.LEADER) {
+        if (you.getRole() == Role.ADMIN) {
             msg(TL.COMMAND_MOD_TARGETISADMIN);
             return;
         }

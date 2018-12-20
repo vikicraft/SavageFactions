@@ -657,7 +657,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         // And each role.
         for (Role role : Role.values()) {
-            if (role != Role.LEADER) {
+            if (role != Role.ADMIN) {
                 permissions.put(role, new HashMap<>(freshMap));
             }
         }
@@ -910,7 +910,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         }
 
         for (FPlayer fplayer : fplayers) {
-            if (fplayer.getRole() == Role.LEADER) {
+            if (fplayer.getRole() == Role.ADMIN) {
                 return fplayer;
             }
         }
@@ -1014,7 +1014,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             if (oldLeader != null) {
                 oldLeader.setRole(Role.NORMAL);
             }
-            replacements.get(0).setRole(Role.LEADER);
+            replacements.get(0).setRole(Role.ADMIN);
             //TODO:TL
             this.msg("<i>Faction admin <h>%s<i> has been removed. %s<i> has been promoted as the new faction admin.", oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
             P.p.log("Faction " + this.getTag() + " (" + this.getId() + ") admin was removed. Replacement admin: " + replacements.get(0).getName());
@@ -1156,7 +1156,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public boolean playerHasOwnershipRights(FPlayer fplayer, FLocation loc) {
         // in own faction, with sufficient role or permission to bypass
         // ownership?
-        if (fplayer.getFaction() == this && (fplayer.getRole().isAtLeast(Conf.ownedAreaModeratorsBypass ? Role.MODERATOR : Role.LEADER) || Permission.OWNERSHIP_BYPASS.has(fplayer.getPlayer()))) {
+        if (fplayer.getFaction() == this && (fplayer.getRole().isAtLeast(Conf.ownedAreaModeratorsBypass ? Role.MODERATOR : Role.ADMIN) || Permission.OWNERSHIP_BYPASS.has(fplayer.getPlayer()))) {
             return true;
         }
 

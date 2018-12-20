@@ -36,7 +36,7 @@ public class CmdChest extends FCommand {
         // This permission check is way too explicit but it's clean
         if (!fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.CHEST);
-            if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
+            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
                 fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "access chest");
                 return;
             }

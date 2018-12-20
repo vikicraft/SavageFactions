@@ -659,7 +659,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
         boolean perm = myFaction.isPermanent();
 
-        if (!perm && this.getRole() == Role.LEADER && myFaction.getFPlayers().size() > 1) {
+        if (!perm && this.getRole() == Role.ADMIN && myFaction.getFPlayers().size() > 1) {
             msg(TL.LEAVE_PASSADMIN);
             return;
         }
@@ -900,7 +900,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public boolean canFlyAtLocation(FLocation location) {
         Faction faction = Board.getInstance().getFactionAt(location);
-        if ((faction == getFaction() && getRole() == Role.LEADER) || isAdminBypassing) {
+        if ((faction == getFaction() && getRole() == Role.ADMIN) || isAdminBypassing) {
             return true;
         }
 
@@ -1202,7 +1202,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     		case NORMAL: return Conf.prefixNormal;
     		case MODERATOR: return Conf.prefixMod;
     		case COLEADER: return Conf.prefixCoLeader;
-    		case LEADER: return Conf.prefixLeader;
+    		case ADMIN: return Conf.prefixLeader;
     	}
     	
         return null;

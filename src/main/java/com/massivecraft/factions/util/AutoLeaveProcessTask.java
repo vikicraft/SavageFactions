@@ -60,7 +60,7 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
                 }
 
                 // if player is faction admin, sort out the faction since he's going away
-                if (fplayer.getRole() == Role.LEADER) {
+                if (fplayer.getRole() == Role.ADMIN) {
                     Faction faction = fplayer.getFaction();
                     if (faction != null) {
                         fplayer.getFaction().promoteNewLeader();

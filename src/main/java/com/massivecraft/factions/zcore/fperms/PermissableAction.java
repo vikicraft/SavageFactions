@@ -111,9 +111,9 @@ public enum PermissableAction {
 
         switch (access)
         {
-        	case ALLOW: accessValue = "allow"; break;
-        	case DENY: accessValue = "deny"; break;
-        	case UNDEFINED: accessValue = "undefined"; break;
+        	case ALLOW: accessValue = "autoriser"; break;
+        	case DENY: accessValue = "interdire"; break;
+        	case UNDEFINED: accessValue = "par défaut"; break;
         }
 
         // If under the 1.13 version we will use the colorable option.

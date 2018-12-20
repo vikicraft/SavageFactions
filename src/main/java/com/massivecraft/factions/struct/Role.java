@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum Role implements Permissable {
-    LEADER(4, TL.ROLE_LEADER),
+    ADMIN(4, TL.ROLE_LEADER),
     COLEADER(3, TL.ROLE_COLEADER),
     MODERATOR(2, TL.ROLE_MODERATOR),
     NORMAL(1, TL.ROLE_NORMAL),
@@ -47,7 +47,7 @@ public enum Role implements Permissable {
             case 3:
                 return COLEADER;
             case 4:
-                return LEADER;
+                return ADMIN;
         }
 
         return null;
@@ -57,7 +57,7 @@ public enum Role implements Permissable {
         switch (check.toLowerCase()) {
             case "leader":
             case "admin":
-                return LEADER;
+                return ADMIN;
             case "coleader":
                 return COLEADER;
             case "mod":
@@ -95,7 +95,7 @@ public enum Role implements Permissable {
     	
     	switch (this)
     	{
-    		case LEADER: return Conf.prefixLeader;
+    		case ADMIN: return Conf.prefixLeader;
     		case COLEADER: return Conf.prefixCoLeader;
     		case MODERATOR: return Conf.prefixMod;
     		case NORMAL: return Conf.prefixNormal;

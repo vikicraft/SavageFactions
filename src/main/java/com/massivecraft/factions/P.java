@@ -320,7 +320,7 @@ public class P extends MPlugin {
       String line;
       while ((line = br.readLine()) != null) {
         if (line.contains("\"role\": \"ADMIN\"")) {
-          line = line.replace("\"role\": \"ADMIN\"", "\"role\": " + "\"LEADER\"");
+          line = line.replace("\"role\": \"ADMIN\"", "\"role\": " + "\"ADMIN\"");
         }
         lines.add(line);
       }
