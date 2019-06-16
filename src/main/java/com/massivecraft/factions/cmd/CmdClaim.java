@@ -39,12 +39,11 @@ public class CmdClaim extends FCommand {
 
         if (!fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.TERRITORY);
-            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
+            if (access != Access.ALLOW && (fme.getRole() != Role.ADMIN && fme.getRole() != Role.COLEADER && fme.getRole() != Role.MODERATOR)) {
                 fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "change faction territory");
                 return;
             }
         }
-
 
         if (radius < 1) {
             msg(TL.COMMAND_CLAIM_INVALIDRADIUS);

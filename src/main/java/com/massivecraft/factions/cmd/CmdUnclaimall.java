@@ -6,6 +6,9 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.event.LandUnclaimAllEvent;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 
@@ -23,12 +26,20 @@ public class CmdUnclaimall extends FCommand {
 
         senderMustBePlayer = true;
         senderMustBeMember = false;
-        senderMustBeModerator = true;
+        senderMustBeModerator = false;
         senderMustBeAdmin = false;
     }
 
     @Override
     public void perform() {
+        if (!fme.isAdminBypassing()) {
+            Access access = myFaction.getAccess(fme, PermissableAction.TERRITORY);
+            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
+                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "manage faction territory");
+                return;
+            }
+        }
+
         if (Econ.shouldBeUsed()) {
             double refund = Econ.calculateTotalLandRefund(myFaction.getLandRounded());
             if (Conf.bankEnabled && Conf.bankFactionPaysLandCosts) {

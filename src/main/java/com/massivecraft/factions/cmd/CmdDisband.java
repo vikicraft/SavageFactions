@@ -32,7 +32,7 @@ public class CmdDisband extends FCommand {
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeColeader = false;
-        senderMustBeAdmin = false;
+        senderMustBeAdmin = true;
     }
 
     @Override

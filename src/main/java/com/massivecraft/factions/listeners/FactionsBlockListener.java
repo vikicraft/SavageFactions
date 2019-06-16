@@ -107,10 +107,6 @@ public class FactionsBlockListener implements Listener {
         boolean pain = !justCheck && rel.confPainBuild(online);
         boolean deny = rel.confDenyBuild(online);
 
-        Access access = otherFaction.getAccess(me, PermissableAction.fromString(action));
-        if (access == Access.ALLOW && ((rel == Relation.ALLY) || (rel == Relation.ENEMY) || (rel == Relation.NEUTRAL) || (rel == Relation.TRUCE))) {
-            deny = false;
-        }
         // hurt the player for building/destroying in other territory?
         if (pain) {
             player.damage(Conf.actionDeniedPainAmount);
@@ -119,7 +115,6 @@ public class FactionsBlockListener implements Listener {
                 me.msg("<b>It is painful to try to " + action + " in the territory of " + otherFaction.getTag(myFaction));
             }
         }
-
 
         // cancel building/destroying in other territory?
         if (deny) {
@@ -146,8 +141,7 @@ public class FactionsBlockListener implements Listener {
             }
         }
 
-        // Check the permission just after making sure the land isn't owned by someone else to avoid bypass.
-
+        Access access = otherFaction.getAccess(me, PermissableAction.fromString(action));
         if (access != Access.ALLOW && me.getRole() != Role.ADMIN) {
             // TODO: Update this once new access values are added other than just allow / deny.
             if (access == Access.DENY) {
